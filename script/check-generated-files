@@ -8,7 +8,7 @@ set -eu
 
 git update-index -q --really-refresh
 
-if ! git diff-index --exit-code --name-status HEAD -- {tsx,typescript}/src/; then
+if ! git diff-index --exit-code --name-status HEAD -- {nominalscript}/src/; then
     echo "The following files are not up to date in the repository:" 1>&2
     git diff-index --name-status HEAD 1>&2
     echo "Run a build and commit the generated files to resolve this issue." 1>&2

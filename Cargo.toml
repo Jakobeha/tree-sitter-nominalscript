@@ -1,23 +1,21 @@
 [package]
-name = "tree-sitter-typescript"
-description = "Typescript grammar for the tree-sitter parsing library"
+name = "tree-sitter-nominalscript"
+description = "Nomimalscript grammar for the tree-sitter parsing library"
 version = "0.20.2"
-authors = ["Max Brunsfeld <maxbrunsfeld@gmail.com>"]
+authors = ["Jakobeha <jakobeha@fastmail.com>", "Max Brunsfeld <maxbrunsfeld@gmail.com>"]
 license = "MIT"
 readme = "README.md"
-keywords = ["incremental", "parsing", "typescript", "tsx"]
+keywords = ["incremental", "parsing", "nominalscript"]
 categories = ["parsing", "text-editors"]
-repository = "https://github.com/tree-sitter/tree-sitter-typescript"
+repository = "https://github.com/tree-sitter/tree-sitter-nominalscript"
 edition = "2018"
 
 build = "bindings/rust/build.rs"
 include = [
   "common",
   "bindings/rust",
-  "typescript/grammar.js",
-  "typescript/src",
-  "tsx/grammar.js",
-  "tsx/src",
+  "nominalscript/grammar.js",
+  "nominalscript/src",
   "queries"
 ]
 
