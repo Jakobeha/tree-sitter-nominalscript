@@ -22,7 +22,8 @@
   "main": "./bindings/node",
   "devDependencies": {
     "tree-sitter-cli": "^0.20.6",
-    "tree-sitter-typescript": "^0.20.1"
+    "tree-sitter-typescript": "^0.20.1",
+    "tree-sitter-javascript": "^0.20.0"
   },
   "scripts": {
     "build": "npm run build-nominalscript",

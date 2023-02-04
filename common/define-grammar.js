@@ -1,6 +1,16 @@
+/* const Module = require('module');
+
+Module.prototype.__dirname = __dirname;
+Module.prototype.require.cache['tree-sitter-javascript/grammar'] = {
+  exports: require('../node_modules/tree-sitter-javascript/grammar')
+}; */
+
 module.exports = function defineGrammar(dialect) {
-  return grammar(require('tree-sitter-typescript/grammar'), {
+  return grammar(require('tree-sitter-typescript/typescript/grammar'), {
     name: dialect,
+
+    externals: ($, previous) => previous.concat([
+    ]),
 
     precedences: ($, previous) => previous.concat([
       [
@@ -64,7 +74,7 @@ module.exports = function defineGrammar(dialect) {
       primary_expression: ($, previous) => choice(
         previous,
         $.nominal_wrap_expression,
-        $.nominal_wrap_unchecked_expression
+        $.nominal_wrap_unchecked_expression,
       ),
 
       export_specifier: ($, previous) => choice(
