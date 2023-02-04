@@ -134,15 +134,15 @@
         "named": true
       },
       {
+        "type": "nominal_type_declaration",
+        "named": true
+      },
+      {
         "type": "type_alias_declaration",
         "named": true
       },
       {
         "type": "variable_declaration",
-        "named": true
-      },
-      {
-        "type": "nominal_type_declaration",
         "named": true
       }
     ]
@@ -185,10 +185,6 @@
       },
       {
         "type": "primary_expression",
-        "named": true
-      },
-      {
-        "type": "satisfies_expression",
         "named": true
       },
       {
@@ -300,6 +296,14 @@
         "named": true
       },
       {
+        "type": "nominal_wrap_expression",
+        "named": true
+      },
+      {
+        "type": "nominal_wrap_unchecked_expression",
+        "named": true
+      },
+      {
         "type": "non_null_expression",
         "named": true
       },
@@ -349,14 +353,6 @@
       },
       {
         "type": "undefined",
-        "named": true
-      },
-      {
-        "type": "nominal_wrap_expression",
-        "named": true
-      },
-      {
-        "type": "nominal_wrap_unchecked_expression",
         "named": true
       }
     ]
@@ -561,16 +557,6 @@
           }
         ]
       },
-      "return_nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
-            "named": true
-          }
-        ]
-      },
       "type_parameters": {
         "multiple": false,
         "required": false,
@@ -680,6 +666,45 @@
     }
   },
   {
+    "type": "array_nominal_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "array_nominal_type",
+          "named": true
+        },
+        {
+          "type": "generic_nominal_type",
+          "named": true
+        },
+        {
+          "type": "nominal_type_identifier",
+          "named": true
+        },
+        {
+          "type": "object_nominal_type",
+          "named": true
+        },
+        {
+          "type": "parenthesized_nominal_type",
+          "named": true
+        },
+        {
+          "type": "predefined_nominal_type",
+          "named": true
+        },
+        {
+          "type": "tuple_nominal_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "array_pattern",
     "named": true,
     "fields": {},
@@ -769,16 +794,6 @@
           }
         ]
       },
-      "return_nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
-            "named": true
-          }
-        ]
-      },
       "type_parameters": {
         "multiple": false,
         "required": false,
@@ -844,10 +859,6 @@
         },
         {
           "type": "type_predicate",
-          "named": true
-        },
-        {
-          "type": "nominal_type_predicate",
           "named": true
         }
       ]
@@ -1276,16 +1287,6 @@
           }
         ]
       },
-      "return_nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
-            "named": true
-          }
-        ]
-      },
       "type_parameters": {
         "multiple": false,
         "required": false,
@@ -1308,6 +1309,16 @@
         "types": [
           {
             "type": "statement_block",
+            "named": true
+          }
+        ]
+      },
+      "nominal_type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "nominal_type_annotation",
             "named": true
           }
         ]
@@ -1336,10 +1347,6 @@
         "types": [
           {
             "type": "type_annotation",
-            "named": true
-          },
-          {
-            "type": "nominal_type_annotation",
             "named": true
           }
         ]
@@ -1412,10 +1419,6 @@
       "types": [
         {
           "type": "abstract_method_signature",
-          "named": true
-        },
-        {
-          "type": "class_static_block",
           "named": true
         },
         {
@@ -1514,22 +1517,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "class_static_block",
-    "named": true,
-    "fields": {
-      "body": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "statement_block",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -1708,16 +1695,6 @@
         "types": [
           {
             "type": "type_annotation",
-            "named": true
-          }
-        ]
-      },
-      "nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
             "named": true
           }
         ]
@@ -2057,7 +2034,7 @@
       },
       "name": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "identifier",
@@ -2069,6 +2046,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "nominal_type_identifier_denoted",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -2486,16 +2473,6 @@
           }
         ]
       },
-      "return_nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
-            "named": true
-          }
-        ]
-      },
       "type_parameters": {
         "multiple": false,
         "required": false,
@@ -2560,22 +2537,76 @@
           }
         ]
       },
-      "return_nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
-            "named": true
-          }
-        ]
-      },
       "type_parameters": {
         "multiple": false,
         "required": false,
         "types": [
           {
             "type": "type_parameters",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "function_nominal_type",
+    "named": true,
+    "fields": {
+      "nominal_type_parameters": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "nominal_type_parameters",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "nominal_formal_parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "array_nominal_type",
+            "named": true
+          },
+          {
+            "type": "function_nominal_type",
+            "named": true
+          },
+          {
+            "type": "generic_nominal_type",
+            "named": true
+          },
+          {
+            "type": "nominal_type_identifier",
+            "named": true
+          },
+          {
+            "type": "object_nominal_type",
+            "named": true
+          },
+          {
+            "type": "parenthesized_nominal_type",
+            "named": true
+          },
+          {
+            "type": "predefined_nominal_type",
+            "named": true
+          },
+          {
+            "type": "tuple_nominal_type",
             "named": true
           }
         ]
@@ -2620,16 +2651,6 @@
           },
           {
             "type": "type_predicate_annotation",
-            "named": true
-          }
-        ]
-      },
-      "return_nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
             "named": true
           }
         ]
@@ -2686,16 +2707,6 @@
           },
           {
             "type": "type_predicate",
-            "named": true
-          }
-        ]
-      },
-      "return_nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
             "named": true
           }
         ]
@@ -2764,16 +2775,6 @@
           }
         ]
       },
-      "return_nominal_type" : {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
-            "named": true
-          }
-        ]
-      },
       "type_parameters": {
         "multiple": false,
         "required": false,
@@ -2838,22 +2839,38 @@
           }
         ]
       },
-      "return_nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
-            "named": true
-          }
-        ]
-      },
       "type_parameters": {
         "multiple": false,
         "required": false,
         "types": [
           {
             "type": "type_parameters",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "generic_nominal_type",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "nominal_type_identifier",
+            "named": true
+          }
+        ]
+      },
+      "nominal_type_arguments": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "nominal_type_arguments",
             "named": true
           }
         ]
@@ -2884,32 +2901,6 @@
         "types": [
           {
             "type": "type_arguments",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "nominal_generic_type",
-    "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "nominal_type_identifier",
-            "named": true
-          }
-        ]
-      },
-      "type_arguments": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "nominal_type_arguments",
             "named": true
           }
         ]
@@ -2951,11 +2942,6 @@
         ]
       }
     }
-  },
-  {
-    "type": "identifier",
-    "named": true,
-    "fields": {}
   },
   {
     "type": "if_statement",
@@ -3113,7 +3099,7 @@
       },
       "name": {
         "multiple": false,
-        "required": true,
+        "required": false,
         "types": [
           {
             "type": "identifier",
@@ -3125,6 +3111,16 @@
           }
         ]
       }
+    },
+    "children": {
+      "multiple": false,
+      "required": false,
+      "types": [
+        {
+          "type": "nominal_type_identifier_denoted",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -3965,16 +3961,6 @@
           }
         ]
       },
-      "return_nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
-            "named": true
-          }
-        ]
-      },
       "type_parameters": {
         "multiple": false,
         "required": false,
@@ -4055,16 +4041,6 @@
           },
           {
             "type": "type_predicate_annotation",
-            "named": true
-          }
-        ]
-      },
-      "return_nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
             "named": true
           }
         ]
@@ -4264,6 +4240,492 @@
     }
   },
   {
+    "type": "nominal_formal_parameters",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "array_nominal_type",
+          "named": true
+        },
+        {
+          "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "generic_nominal_type",
+          "named": true
+        },
+        {
+          "type": "nominal_type_identifier",
+          "named": true
+        },
+        {
+          "type": "object_nominal_type",
+          "named": true
+        },
+        {
+          "type": "parenthesized_nominal_type",
+          "named": true
+        },
+        {
+          "type": "predefined_nominal_type",
+          "named": true
+        },
+        {
+          "type": "tuple_nominal_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "nominal_method_signature",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "computed_property_name",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "private_property_identifier",
+            "named": true
+          },
+          {
+            "type": "property_identifier",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      },
+      "nominal_type_parameters": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "nominal_type_parameters",
+            "named": true
+          }
+        ]
+      },
+      "parameters": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "nominal_formal_parameters",
+            "named": true
+          }
+        ]
+      },
+      "return_type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "nominal_type_annotation",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "nominal_property_signature",
+    "named": true,
+    "fields": {
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "computed_property_name",
+            "named": true
+          },
+          {
+            "type": "number",
+            "named": true
+          },
+          {
+            "type": "private_property_identifier",
+            "named": true
+          },
+          {
+            "type": "property_identifier",
+            "named": true
+          },
+          {
+            "type": "string",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "nominal_type_annotation",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "nominal_type_annotation",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "array_nominal_type",
+          "named": true
+        },
+        {
+          "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "generic_nominal_type",
+          "named": true
+        },
+        {
+          "type": "nominal_type_identifier",
+          "named": true
+        },
+        {
+          "type": "object_nominal_type",
+          "named": true
+        },
+        {
+          "type": "parenthesized_nominal_type",
+          "named": true
+        },
+        {
+          "type": "predefined_nominal_type",
+          "named": true
+        },
+        {
+          "type": "tuple_nominal_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "nominal_type_arguments",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "array_nominal_type",
+          "named": true
+        },
+        {
+          "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "generic_nominal_type",
+          "named": true
+        },
+        {
+          "type": "nominal_type_identifier",
+          "named": true
+        },
+        {
+          "type": "object_nominal_type",
+          "named": true
+        },
+        {
+          "type": "parenthesized_nominal_type",
+          "named": true
+        },
+        {
+          "type": "predefined_nominal_type",
+          "named": true
+        },
+        {
+          "type": "tuple_nominal_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "nominal_type_declaration",
+    "named": true,
+    "fields": {
+      "guard": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "nominal_type_guard",
+            "named": true
+          }
+        ]
+      },
+      "name": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "nominal_type_identifier",
+            "named": true
+          }
+        ]
+      },
+      "nominal_inherited_types": {
+        "multiple": true,
+        "required": false,
+        "types": [
+          {
+            "type": "nominal_type_annotation",
+            "named": true
+          }
+        ]
+      },
+      "nominal_type_parameters": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "nominal_type_parameters",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "type_annotation",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "nominal_type_denoted",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "array_nominal_type",
+          "named": true
+        },
+        {
+          "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "generic_nominal_type",
+          "named": true
+        },
+        {
+          "type": "nominal_type_identifier",
+          "named": true
+        },
+        {
+          "type": "object_nominal_type",
+          "named": true
+        },
+        {
+          "type": "parenthesized_nominal_type",
+          "named": true
+        },
+        {
+          "type": "predefined_nominal_type",
+          "named": true
+        },
+        {
+          "type": "tuple_nominal_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "nominal_type_guard",
+    "named": true,
+    "fields": {
+      "body": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "statement_block",
+            "named": true
+          }
+        ]
+      },
+      "bound": {
+        "multiple": false,
+        "required": true,
+        "types": [
+          {
+            "type": "identifier",
+            "named": true
+          },
+          {
+            "type": "undefined",
+            "named": true
+          }
+        ]
+      }
+    }
+  },
+  {
+    "type": "nominal_type_identifier_denoted",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "nominal_type_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "nominal_type_parameters",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "nominal_type_identifier",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "nominal_wrap_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "array_nominal_type",
+          "named": true
+        },
+        {
+          "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "generic_nominal_type",
+          "named": true
+        },
+        {
+          "type": "nominal_type_identifier",
+          "named": true
+        },
+        {
+          "type": "object_nominal_type",
+          "named": true
+        },
+        {
+          "type": "parenthesized_nominal_type",
+          "named": true
+        },
+        {
+          "type": "predefined_nominal_type",
+          "named": true
+        },
+        {
+          "type": "primary_expression",
+          "named": true
+        },
+        {
+          "type": "tuple_nominal_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "nominal_wrap_unchecked_expression",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "array_nominal_type",
+          "named": true
+        },
+        {
+          "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "generic_nominal_type",
+          "named": true
+        },
+        {
+          "type": "nominal_type_identifier",
+          "named": true
+        },
+        {
+          "type": "object_nominal_type",
+          "named": true
+        },
+        {
+          "type": "parenthesized_nominal_type",
+          "named": true
+        },
+        {
+          "type": "predefined_nominal_type",
+          "named": true
+        },
+        {
+          "type": "primary_expression",
+          "named": true
+        },
+        {
+          "type": "tuple_nominal_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "non_null_expression",
     "named": true,
     "fields": {},
@@ -4337,6 +4799,25 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "object_nominal_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "nominal_method_signature",
+          "named": true
+        },
+        {
+          "type": "nominal_property_signature",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -4469,6 +4950,49 @@
     "fields": {}
   },
   {
+    "type": "optional_nominal_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "array_nominal_type",
+          "named": true
+        },
+        {
+          "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "generic_nominal_type",
+          "named": true
+        },
+        {
+          "type": "nominal_type_identifier",
+          "named": true
+        },
+        {
+          "type": "object_nominal_type",
+          "named": true
+        },
+        {
+          "type": "parenthesized_nominal_type",
+          "named": true
+        },
+        {
+          "type": "predefined_nominal_type",
+          "named": true
+        },
+        {
+          "type": "tuple_nominal_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "optional_parameter",
     "named": true,
     "fields": {
@@ -4488,6 +5012,16 @@
         "types": [
           {
             "type": "identifier",
+            "named": true
+          }
+        ]
+      },
+      "nominal_type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "nominal_type_annotation",
             "named": true
           }
         ]
@@ -4512,16 +5046,6 @@
         "types": [
           {
             "type": "type_annotation",
-            "named": true
-          }
-        ]
-      },
-      "nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
             "named": true
           }
         ]
@@ -4680,22 +5204,22 @@
     "type": "parenthesized_expression",
     "named": true,
     "fields": {
-      "type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "type_annotation",
-            "named": true
-          }
-        ]
-      },
       "nominal_type": {
         "multiple": false,
         "required": false,
         "types": [
           {
             "type": "nominal_type_annotation",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "type_annotation",
             "named": true
           }
         ]
@@ -4711,6 +5235,49 @@
         },
         {
           "type": "sequence_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "parenthesized_nominal_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "array_nominal_type",
+          "named": true
+        },
+        {
+          "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "generic_nominal_type",
+          "named": true
+        },
+        {
+          "type": "nominal_type_identifier",
+          "named": true
+        },
+        {
+          "type": "object_nominal_type",
+          "named": true
+        },
+        {
+          "type": "parenthesized_nominal_type",
+          "named": true
+        },
+        {
+          "type": "predefined_nominal_type",
+          "named": true
+        },
+        {
+          "type": "tuple_nominal_type",
           "named": true
         }
       ]
@@ -4746,6 +5313,11 @@
         }
       ]
     }
+  },
+  {
+    "type": "predefined_nominal_type",
+    "named": true,
+    "fields": {}
   },
   {
     "type": "predefined_type",
@@ -4810,16 +5382,6 @@
             "named": true
           }
         ]
-      },
-      "nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
-            "named": true
-          }
-        ]
       }
     },
     "children": {
@@ -4867,22 +5429,22 @@
           }
         ]
       },
-      "type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "type_annotation",
-            "named": true
-          }
-        ]
-      },
       "nominal_type": {
         "multiple": false,
         "required": false,
         "types": [
           {
             "type": "nominal_type_annotation",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "type_annotation",
             "named": true
           }
         ]
@@ -4998,6 +5560,16 @@
           }
         ]
       },
+      "nominal_type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "nominal_type_annotation",
+            "named": true
+          }
+        ]
+      },
       "pattern": {
         "multiple": false,
         "required": false,
@@ -5018,16 +5590,6 @@
         "types": [
           {
             "type": "type_annotation",
-            "named": true
-          }
-        ]
-      },
-      "nominal_type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_annotation",
             "named": true
           }
         ]
@@ -5142,41 +5704,6 @@
         },
         {
           "type": "sequence_expression",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "satisfies_expression",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "_primary_type",
-          "named": true
-        },
-        {
-          "type": "constructor_type",
-          "named": true
-        },
-        {
-          "type": "expression",
-          "named": true
-        },
-        {
-          "type": "function_type",
-          "named": true
-        },
-        {
-          "type": "infer_type",
-          "named": true
-        },
-        {
-          "type": "readonly_type",
           "named": true
         }
       ]
@@ -5568,6 +6095,61 @@
     }
   },
   {
+    "type": "tuple_nominal_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": false,
+      "types": [
+        {
+          "type": "array_nominal_type",
+          "named": true
+        },
+        {
+          "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "generic_nominal_type",
+          "named": true
+        },
+        {
+          "type": "nominal_type_identifier",
+          "named": true
+        },
+        {
+          "type": "object_nominal_type",
+          "named": true
+        },
+        {
+          "type": "optional_nominal_type",
+          "named": true
+        },
+        {
+          "type": "optional_parameter",
+          "named": true
+        },
+        {
+          "type": "parenthesized_nominal_type",
+          "named": true
+        },
+        {
+          "type": "predefined_nominal_type",
+          "named": true
+        },
+        {
+          "type": "required_parameter",
+          "named": true
+        },
+        {
+          "type": "tuple_nominal_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "tuple_type",
     "named": true,
     "fields": {},
@@ -5667,94 +6249,6 @@
     }
   },
   {
-    "type": "nominal_type_declaration",
-    "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "nominal_type_identifier",
-            "named": true
-          }
-        ]
-      },
-      "type_parameters": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_type_parameters",
-            "named": true
-          }
-        ]
-      },
-      "type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "_primary_type",
-            "named": true
-          },
-          {
-            "type": "constructor_type",
-            "named": true
-          },
-          {
-            "type": "function_type",
-            "named": true
-          },
-          {
-            "type": "infer_type",
-            "named": true
-          },
-          {
-            "type": "readonly_type",
-            "named": true
-          }
-        ]
-      },
-      "guard": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "nominal_guard",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "nominal_guard",
-    "named": true,
-    "fields": {
-      "bound": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      },
-      "body": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "statement_block",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "type_annotation",
     "named": true,
     "fields": {},
@@ -5786,21 +6280,6 @@
     }
   },
   {
-    "type": "nominal_type_annotation",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "nominal_type",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
     "type": "type_arguments",
     "named": true,
     "fields": {},
@@ -5825,42 +6304,11 @@
           "named": true
         },
         {
-          "type": "readonly_type",
+          "type": "nominal_type_denoted",
           "named": true
         },
         {
-          "type": "nominal_type_denoted",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "nominal_type_denoted",
-    "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "nominal_type",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "nominal_type_arguments",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "nominal_type",
+          "type": "readonly_type",
           "named": true
         }
       ]
@@ -5922,38 +6370,6 @@
     }
   },
   {
-    "type": "nominal_type_parameter",
-    "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "nominal_type_identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "nominal_type_parameter_denoted",
-    "named": true,
-    "fields": {
-      "name": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "nominal_type_identifier",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
     "type": "type_parameters",
     "named": true,
     "fields": {},
@@ -5962,26 +6378,11 @@
       "required": true,
       "types": [
         {
-          "type": "type_parameter",
+          "type": "nominal_type_identifier_denoted",
           "named": true
         },
         {
-          "type": "nominal_type_parameter_denoted",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "nominal_type_parameters",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": true,
-      "required": true,
-      "types": [
-        {
-          "type": "nominal_type_parameter",
+          "type": "type_parameter",
           "named": true
         }
       ]
@@ -6227,22 +6628,22 @@
           }
         ]
       },
-      "type": {
-        "multiple": false,
-        "required": false,
-        "types": [
-          {
-            "type": "type_annotation",
-            "named": true
-          }
-        ]
-      },
       "nominal_type": {
         "multiple": false,
         "required": false,
         "types": [
           {
             "type": "nominal_type_annotation",
+            "named": true
+          }
+        ]
+      },
+      "type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "type_annotation",
             "named": true
           }
         ]
@@ -6324,58 +6725,6 @@
           "named": true
         }
       ]
-    }
-  },
-  {
-    "type": "nominal_wrap_expression",
-    "named": true,
-    "fields": {
-      "nominal_type": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "nominal_type",
-            "named": true
-          }
-        ]
-      },
-      "expression": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "primary_expression",
-            "named": true
-          }
-        ]
-      }
-    }
-  },
-  {
-    "type": "nominal_wrap_unchecked_expression",
-    "named": true,
-    "fields": {
-      "nominal_type": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "nominal_type",
-            "named": true
-          }
-        ]
-      },
-      "expression": {
-        "multiple": false,
-        "required": true,
-        "types": [
-          {
-            "type": "primary_expression",
-            "named": true
-          }
-        ]
-      }
     }
   },
   {
@@ -6595,6 +6944,50 @@
     "named": false
   },
   {
+    "type": "Any",
+    "named": false
+  },
+  {
+    "type": "Array",
+    "named": false
+  },
+  {
+    "type": "Boolean",
+    "named": false
+  },
+  {
+    "type": "Float",
+    "named": false
+  },
+  {
+    "type": "Function",
+    "named": false
+  },
+  {
+    "type": "Integer",
+    "named": false
+  },
+  {
+    "type": "Never",
+    "named": false
+  },
+  {
+    "type": "Number",
+    "named": false
+  },
+  {
+    "type": "Object",
+    "named": false
+  },
+  {
+    "type": "String",
+    "named": false
+  },
+  {
+    "type": "Symbol",
+    "named": false
+  },
+  {
     "type": "[",
     "named": false
   },
@@ -6739,7 +7132,15 @@
     "named": false
   },
   {
+    "type": "guard",
+    "named": false
+  },
+  {
     "type": "hash_bang_line",
+    "named": true
+  },
+  {
+    "type": "identifier",
     "named": true
   },
   {
@@ -6803,6 +7204,10 @@
     "named": false
   },
   {
+    "type": "nominal_type_identifier",
+    "named": true
+  },
+  {
     "type": "null",
     "named": true
   },
@@ -6864,10 +7269,6 @@
   },
   {
     "type": "return",
-    "named": false
-  },
-  {
-    "type": "satisfies",
     "named": false
   },
   {
@@ -6943,10 +7344,6 @@
     "named": true
   },
   {
-    "type": "nominal_type_identifier",
-    "named": true
-  },
-  {
     "type": "typeof",
     "named": false
   },
@@ -7012,10 +7409,6 @@
   },
   {
     "type": "~",
-    "named": false
-  },
-  {
-    "type": "guard",
     "named": false
   }
 ]

@@ -1,10 +1,3 @@
-/* const Module = require('module');
-
-Module.prototype.__dirname = __dirname;
-Module.prototype.require.cache['tree-sitter-javascript/grammar'] = {
-  exports: require('../node_modules/tree-sitter-javascript/grammar')
-}; */
-
 module.exports = function defineGrammar(dialect) {
   return grammar(require('tree-sitter-typescript/typescript/grammar'), {
     name: dialect,
@@ -14,19 +7,77 @@ module.exports = function defineGrammar(dialect) {
 
     precedences: ($, previous) => previous.concat([
       [
-        'call',
-        $.nominal_wrap_unchecked_expression,
-        $.nominal_wrap_expression,
-        'unary',
-        'binary',
+        $.nominal_type_declaration,
+        $.nominal_type_annotation,
+        $._primary_nominal_type,
       ],
       [
         $.nominal_type_declaration,
-        'type_alias_declaration',
+        $.primary_expression
+      ],
+      [
+        $.nominal_wrap_unchecked_expression,
+        $.nominal_wrap_expression,
+        $.expression,
+      ],
+      [
+        $.nominal_wrap_unchecked_expression,
+        $.nominal_wrap_expression,
+        $.subscript_expression,
+      ],
+      [
+        $.nominal_wrap_unchecked_expression,
+        $.nominal_wrap_expression,
+        $.member_expression,
+      ],
+      [
+        $.rest_pattern,
+        $._primary_nominal_type,
+      ],
+      [
+        $.type_query,
+        $._primary_nominal_type,
       ],
     ]),
 
     conflicts: ($, previous) => previous.concat([
+      [$.variable_declarator],
+      [$.public_field_definition],
+      [$.primary_expression, $._primary_nominal_type],
+      [$.primary_expression, $.generic_nominal_type],
+      [$.primary_expression, $._property_name, $._primary_nominal_type],
+      [$.primary_expression, $._property_name, $.generic_nominal_type],
+      [$.primary_expression, $.pattern, $._primary_nominal_type],
+      [$.primary_expression, $._primary_type, $._primary_nominal_type],
+      [$.primary_expression, $.generic_type, $.generic_nominal_type],
+      [$.primary_expression, $.pattern, $._primary_type, $._primary_nominal_type],
+      [$.pattern, $._primary_nominal_type],
+      [$._primary_type, $._primary_nominal_type],
+      [$.pattern, $._primary_type, $._primary_nominal_type],
+      [$.type_parameter, $.nominal_type_parameters],
+      [$.formal_parameters, $.nominal_formal_parameters],
+      [$.property_signature, $.nominal_property_signature],
+      [$.array, $.tuple_nominal_type],
+      [$.array, $.array_pattern, $.tuple_nominal_type],
+      [$.array, $.tuple_type, $.tuple_nominal_type],
+      [$.array, $.array_pattern, $.tuple_type, $.tuple_nominal_type],
+      [$.array_pattern, $.tuple_nominal_type],
+      [$.tuple_type, $.tuple_nominal_type],
+      [$.array_pattern, $.tuple_type, $.tuple_nominal_type],
+      [$.optional_tuple_parameter, $._primary_nominal_type],
+      [$.optional_tuple_parameter, $._primary_type, $._primary_nominal_type],
+      [$._tuple_type_member, $._tuple_nominal_type_member],
+      [$.object, $.object_nominal_type],
+      [$.object, $.object_pattern, $.object_nominal_type],
+      [$.object, $.object_type, $.object_nominal_type],
+      [$.object, $.object_pattern, $.object_type, $.object_nominal_type],
+      [$.object_pattern, $.object_nominal_type],
+      [$.object_pattern, $.object_type, $.object_nominal_type],
+      [$.object_type, $.object_nominal_type],
+      [$.statement_block, $.object, $.object_nominal_type],
+      [$.empty_statement, $.object_nominal_type],
+      [$._primary_type, $.type_parameter, $.nominal_type_parameters],
+      [$._primary_nominal_type, $.nominal_type_identifier_denoted],
     ]),
 
     inline: ($, previous) => previous.concat([
@@ -60,9 +111,10 @@ module.exports = function defineGrammar(dialect) {
               'parameter',
               choice($.identifier, $._destructuring_pattern)
             ),
-            optional(
-              field('type', $.type_annotation),
-              field('nominal_type', optional($.nominal_type_annotation)),
+            // note that it's optional(field(...)) in the original grammar...
+            // is there a difference?
+            field('type', optional($.type_annotation)),
+            field('nominal_type', optional($.nominal_type_annotation),
             ),
             ')'
           )
@@ -75,6 +127,19 @@ module.exports = function defineGrammar(dialect) {
         previous,
         $.nominal_wrap_expression,
         $.nominal_wrap_unchecked_expression,
+      ),
+
+      nominal_wrap_expression: $ => seq(
+        $._nominal_type,
+        ';',
+        $.primary_expression
+      ),
+
+      nominal_wrap_unchecked_expression: $ => seq(
+        $._nominal_type,
+        '!',
+        ';',
+        $.primary_expression
       ),
 
       export_specifier: ($, previous) => choice(
@@ -249,7 +314,14 @@ module.exports = function defineGrammar(dialect) {
 
       nominal_property_signature: $ => seq(
         field('name', $._property_name),
-        field('type', optional($.nominal_type_annotation))
+        field('type', $.nominal_type_annotation)
+      ),
+
+      nominal_method_signature: $ => seq(
+        field('name', $._property_name),
+        field('nominal_type_parameters', optional($.nominal_type_parameters)),
+        field('parameters', $.nominal_formal_parameters),
+        field('return_type', $.nominal_type_annotation),
       ),
 
       type_parameters: $ => seq(
@@ -291,7 +363,7 @@ module.exports = function defineGrammar(dialect) {
       _reserved_identifier: ($, previous) => choice(
         'guard',
         previous
-      ),
+      )
     },
   });
 }
