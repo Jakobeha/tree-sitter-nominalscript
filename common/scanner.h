@@ -7,6 +7,7 @@ enum TokenType {
   TERNARY_QMARK,
   BINARY_OPERATORS,
   FUNCTION_SIGNATURE_AUTOMATIC_SEMICOLON,
+  NOMINAL_TOKEN,
 };
 
 static void advance(TSLexer *lexer) { lexer->advance(lexer, false); }
@@ -159,40 +160,60 @@ static bool scan_automatic_semicolon(TSLexer *lexer, const bool *valid_symbols){
   return true;
 }
 
-static bool scan_ternary_qmark(TSLexer *lexer) {
+static void skip_ws(TSLexer *lexer) {
   for(;;) {
     if (!iswspace(lexer->lookahead)) break;
     skip(lexer);
   }
+}
 
-  if (lexer->lookahead == '?') {
+static bool scan_ternary_qmark(TSLexer *lexer) {
+  advance(lexer);
+
+  if (lexer->lookahead == '?') return false;
+  /* Optional chaining. */
+  if (lexer->lookahead == '.') return false;
+
+  lexer->mark_end(lexer);
+  lexer->result_symbol = TERNARY_QMARK;
+
+  /* TypeScript optional arguments contain the ?: sequence, possibly
+     with whitespace. */
+  for(;;) {
+    if (!iswspace(lexer->lookahead)) break;
     advance(lexer);
-
-    if (lexer->lookahead == '?') return false;
-    /* Optional chaining. */
-    if (lexer->lookahead == '.') return false;
-
-    lexer->mark_end(lexer);
-    lexer->result_symbol = TERNARY_QMARK;
-
-    /* TypeScript optional arguments contain the ?: sequence, possibly
-       with whitespace. */
-    for(;;) {
-      if (!iswspace(lexer->lookahead)) break;
-      advance(lexer);
-    }
-    if (lexer->lookahead == ':') return false;
-    if (lexer->lookahead == ')') return false;
-    if (lexer->lookahead == ',') return false;
-
-    if (lexer->lookahead == '.') {
-      advance(lexer);
-      if (iswdigit(lexer->lookahead)) return true;
-      return false;
-    }
-    return true;
   }
-  return false;
+  if (lexer->lookahead == ':') return false;
+  if (lexer->lookahead == ')') return false;
+  if (lexer->lookahead == ',') return false;
+
+  if (lexer->lookahead == '.') {
+    advance(lexer);
+    if (iswdigit(lexer->lookahead)) return true;
+    return false;
+  }
+  return true;
+}
+
+static bool scan_nominal_token(TSLexer *lexer) {
+  advance(lexer);
+  lexer->mark_end(lexer);
+  lexer->result_symbol = NOMINAL_TOKEN;
+
+  for (;;) {
+    switch (lexer->lookahead) {
+      case '\n':
+      case '}':
+      case ')':
+      case ']':
+      case '>':
+        return false;
+    }
+    if (!iswspace(lexer->lookahead)) break;
+    skip(lexer);
+  }
+
+  return true;
 }
 
 static inline bool external_scanner_scan(void *payload, TSLexer *lexer, const bool *valid_symbols) {
@@ -206,10 +227,16 @@ static inline bool external_scanner_scan(void *payload, TSLexer *lexer, const bo
     bool ret = scan_automatic_semicolon(lexer, valid_symbols);
     if (!ret && valid_symbols[TERNARY_QMARK] && lexer->lookahead == '?')
       return scan_ternary_qmark(lexer);
+    else if (!ret && valid_symbols[NOMINAL_TOKEN] && lexer->lookahead == ';')
+      return scan_nominal_token(lexer);
     return ret;
   }
-  if (valid_symbols[TERNARY_QMARK]) {
-    return scan_ternary_qmark(lexer);
+  if (valid_symbols[TERNARY_QMARK] || valid_symbols[NOMINAL_TOKEN]) {
+    skip_ws(lexer);
+    if (valid_symbols[TERNARY_QMARK] && lexer->lookahead == '?')
+      return scan_ternary_qmark(lexer);
+    else if (valid_symbols[NOMINAL_TOKEN] && lexer->lookahead == ';')
+      return scan_nominal_token(lexer);
   }
 
   return false;

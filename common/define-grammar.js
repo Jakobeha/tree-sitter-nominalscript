@@ -3,6 +3,7 @@ module.exports = function defineGrammar(dialect) {
     name: dialect,
 
     externals: ($, previous) => previous.concat([
+      $._nominal_token,
     ]),
 
     precedences: ($, previous) => previous.concat([
@@ -13,11 +14,20 @@ module.exports = function defineGrammar(dialect) {
       ],
       [
         $.nominal_type_declaration,
+        $._property_name,
+        $._primary_nominal_type,
+      ],
+      [
+        $.nominal_type_declaration,
         $.primary_expression
       ],
       [
         $.nominal_wrap_unchecked_expression,
         $.nominal_wrap_expression,
+      ],
+      [
+        $.nominal_formal_parameters,
+        $.parenthesized_nominal_type,
       ],
       [
         'nominal_wrap_expression',
@@ -42,8 +52,6 @@ module.exports = function defineGrammar(dialect) {
     ]),
 
     conflicts: ($, previous) => previous.concat([
-      [$.variable_declarator],
-      [$.public_field_definition],
       [$.primary_expression, $._primary_nominal_type],
       [$.primary_expression, $.generic_nominal_type],
       [$.primary_expression, $._property_name, $._primary_nominal_type],
@@ -75,10 +83,12 @@ module.exports = function defineGrammar(dialect) {
       [$.object_pattern, $.object_nominal_type],
       [$.object_pattern, $.object_type, $.object_nominal_type],
       [$.object_type, $.object_nominal_type],
+      [$._call_signature],
+      [$.property_signature],
       [$.statement_block, $.object, $.object_nominal_type],
       [$.empty_statement, $.object_nominal_type],
       [$._primary_type, $.type_parameter, $.nominal_type_parameters],
-      [$._primary_nominal_type, $.nominal_type_identifier_denoted],
+      [$._primary_nominal_type, $._nominal_type_identifier_denoted],
     ]),
 
     supertypes: ($, previous) => previous.concat([
@@ -135,25 +145,30 @@ module.exports = function defineGrammar(dialect) {
 
       nominal_wrap_expression: $ => prec('nominal_wrap_expression', seq(
         $._nominal_type,
-        ';',
-        $.primary_expression
+        $._nominal_token,
+        $.primary_expression,
       )),
 
       nominal_wrap_unchecked_expression: $ => prec('nominal_wrap_expression', seq(
         $._nominal_type,
         '!',
-        ';',
-        $.primary_expression
+        $._nominal_token,
+        $.primary_expression,
       )),
 
       export_specifier: ($, previous) => choice(
         previous,
-        $.nominal_type_identifier_denoted,
+        $.nominal_import_export_specifier,
       ),
 
       import_specifier: ($, previous) => choice(
         previous,
-        $.nominal_type_identifier_denoted,
+        $.nominal_import_export_specifier,
+      ),
+
+      nominal_import_export_specifier: $ => seq(
+        $._nominal_type_identifier_denoted,
+        field('as', optional(seq('as', $.identifier))),
       ),
 
       variable_declarator: $ => choice(
@@ -166,7 +181,13 @@ module.exports = function defineGrammar(dialect) {
         prec('declaration', seq(
           field('name', $.identifier),
           '!',
-          field('type', $.type_annotation)
+          field('type', $.type_annotation),
+          field('nominal_type', optional($.nominal_type_annotation)),
+        )),
+        prec('declaration', seq(
+          field('name', $.identifier),
+          '!',
+          field('nominal_type', $.nominal_type_annotation),
         ))
       ),
 
@@ -190,11 +211,11 @@ module.exports = function defineGrammar(dialect) {
 
       nominal_type_declaration: $ => seq(
         'type',
-        ';',
+        $._nominal_token,
         field('name', $._nominal_type_identifier),
         field('nominal_type_parameters', optional($.nominal_type_parameters)),
-        field('nominal_inherited_types', repeat($.nominal_type_annotation)),
         field('type', optional($.type_annotation)),
+        field('nominal_inherited_types', repeat(prec(500, $.nominal_type_annotation))),
         field('guard', optional($.nominal_type_guard)),
         $._semicolon
       ),
@@ -222,7 +243,10 @@ module.exports = function defineGrammar(dialect) {
         optional($._initializer)
       ),
 
-      nominal_type_annotation: $ => prec.dynamic(999, seq(';', $._nominal_type)),
+      nominal_type_annotation: $ => prec.dynamic(999, seq(
+        $._nominal_token, 
+        $._nominal_type,
+      )),
 
       tuple_parameter: $ => seq(
         field('name', choice($.identifier, $.rest_pattern)),
@@ -257,7 +281,7 @@ module.exports = function defineGrammar(dialect) {
         $.generic_nominal_type,
         // Literals may be implicitly casted to these types
         // TODO: This confuses tree-sitter because it seems to lex this when it shouldn't,
-        //   so for now we just parse these as _nominal_type_identifier
+        //   so for now we just parse these as nominal_type_identifier
         // $.predefined_nominal_type,
         $.object_nominal_type,
         $.array_nominal_type,
@@ -290,11 +314,11 @@ module.exports = function defineGrammar(dialect) {
       ), */
 
       type_arguments: $ => seq(
-        '<', commaSep1(choice($._type, $.nominal_type_denoted)), optional(','), '>'
+        '<', commaSep1(choice($._type, $._nominal_type_denoted)), optional(','), '>'
       ),
 
-      nominal_type_denoted: $ => seq(
-        ';',
+      _nominal_type_denoted: $ => seq(
+        $._nominal_token,
         $._nominal_type
       ),
 
@@ -302,7 +326,7 @@ module.exports = function defineGrammar(dialect) {
         '<', commaSep1($._nominal_type), optional(','), '>'
       ),
 
-      object_nominal_type: $ => seq(
+      object_nominal_type: $ => prec.dynamic(-100, seq(
         choice('{', '{|'),
         optional(seq(
           optional(choice(',', ';')),
@@ -316,6 +340,17 @@ module.exports = function defineGrammar(dialect) {
           optional(choice(',', $._semicolon))
         )),
         choice('}', '|}')
+      )),
+
+      property_signature: $ => seq(
+        optional($.accessibility_modifier),
+        optional('static'),
+        optional($.override_modifier),
+        optional('readonly'),
+        field('name', $._property_name),
+        optional('?'),
+        field('type', optional($.type_annotation)),
+        field('nominal_type', optional($.nominal_type_annotation)),
       ),
 
       nominal_property_signature: $ => seq(
@@ -323,20 +358,29 @@ module.exports = function defineGrammar(dialect) {
         field('type', $.nominal_type_annotation)
       ),
 
+      _call_signature: $ => seq(
+        field('type_parameters', optional($.type_parameters)),
+        field('parameters', $.formal_parameters),
+        field('return_type', optional(
+          choice($.type_annotation, $.asserts, $.type_predicate_annotation)
+        )),
+        field('nominal_return_type', optional($.nominal_type_annotation)),
+      ),
+
       nominal_method_signature: $ => seq(
         field('name', $._property_name),
         field('nominal_type_parameters', optional($.nominal_type_parameters)),
         field('parameters', $.nominal_formal_parameters),
-        field('return_type', $.nominal_type_annotation),
+        field('return_type', optional($.nominal_type_annotation)),
       ),
 
       type_parameters: $ => seq(
-        '<', commaSep1(choice($.type_parameter, $.nominal_type_identifier_denoted)), optional(','), '>'
+        '<', commaSep1(choice($.type_parameter, $._nominal_type_identifier_denoted)), optional(','), '>'
       ),
 
-      nominal_type_identifier_denoted: $ => seq(
-        ';',
-        $._nominal_type_identifier
+      _nominal_type_identifier_denoted: $ => seq(
+        $._nominal_token,
+        $._nominal_type_identifier,
       ),
 
       nominal_type_parameters: $ => seq(
@@ -366,10 +410,16 @@ module.exports = function defineGrammar(dialect) {
 
       _nominal_type_identifier: $ => alias($.identifier, $.nominal_type_identifier),
 
+      /* nominal_type_identifier: $ => {
+        const uppercaseAlpha = /[A-Z\u00C0-\u00D6\u00D8-\u00DE]/;
+        const alphanumeric = /[^\x00-\x1F\s\p{Zs}:;`"'@#.,|^&<=>+\*-/\\%?!~()\[\]{}\uFEFF\u2060\u200B]|\\u[0-9a-fA-F]{4}|\\u\{[0-9a-fA-F]+\}/;
+        return token(prec(2, seq(uppercaseAlpha, repeat(alphanumeric))));
+      }, */
+
       _reserved_identifier: ($, previous) => choice(
         'guard',
         previous
-      )
+      ),
     },
   });
 }
