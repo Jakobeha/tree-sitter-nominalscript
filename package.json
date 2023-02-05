@@ -22,7 +22,7 @@
   "main": "./bindings/node",
   "devDependencies": {
     "tree-sitter-cli": "^0.20.6",
-    "tree-sitter-typescript": "^0.20.1",
+    "tree-sitter-typescript": "github:tree-sitter/tree-sitter-typescript#5d20856",
     "tree-sitter-javascript": "github:tree-sitter/tree-sitter-javascript#7a29d06"
   },
   "scripts": {

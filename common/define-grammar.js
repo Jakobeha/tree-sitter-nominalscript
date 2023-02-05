@@ -18,16 +18,17 @@ module.exports = function defineGrammar(dialect) {
       [
         $.nominal_wrap_unchecked_expression,
         $.nominal_wrap_expression,
+      ],
+      [
+        'nominal_wrap_expression',
         $.expression,
       ],
       [
-        $.nominal_wrap_unchecked_expression,
-        $.nominal_wrap_expression,
+        'nominal_wrap_expression',
         $.subscript_expression,
       ],
       [
-        $.nominal_wrap_unchecked_expression,
-        $.nominal_wrap_expression,
+        'nominal_wrap_expression',
         $.member_expression,
       ],
       [
@@ -80,6 +81,10 @@ module.exports = function defineGrammar(dialect) {
       [$._primary_nominal_type, $.nominal_type_identifier_denoted],
     ]),
 
+    supertypes: ($, previous) => previous.concat([
+      $._primary_nominal_type,
+    ]),
+
     inline: ($, previous) => previous.concat([
       $._nominal_type_identifier,
     ]),
@@ -91,7 +96,7 @@ module.exports = function defineGrammar(dialect) {
         optional('declare'),
         optional($.accessibility_modifier),
         choice(
-          seq(optional('static'), optional($.override_modifier), optional('readonly')), 
+          seq(optional('static'), optional($.override_modifier), optional('readonly')),
           seq(optional('abstract'), optional('readonly')),
           seq(optional('readonly'), optional('abstract')),
         ),
@@ -114,8 +119,7 @@ module.exports = function defineGrammar(dialect) {
             // note that it's optional(field(...)) in the original grammar...
             // is there a difference?
             field('type', optional($.type_annotation)),
-            field('nominal_type', optional($.nominal_type_annotation),
-            ),
+            field('nominal_type', optional($.nominal_type_annotation)),
             ')'
           )
         ),
@@ -129,18 +133,18 @@ module.exports = function defineGrammar(dialect) {
         $.nominal_wrap_unchecked_expression,
       ),
 
-      nominal_wrap_expression: $ => seq(
+      nominal_wrap_expression: $ => prec('nominal_wrap_expression', seq(
         $._nominal_type,
         ';',
         $.primary_expression
-      ),
+      )),
 
-      nominal_wrap_unchecked_expression: $ => seq(
+      nominal_wrap_unchecked_expression: $ => prec('nominal_wrap_expression', seq(
         $._nominal_type,
         '!',
         ';',
         $.primary_expression
-      ),
+      )),
 
       export_specifier: ($, previous) => choice(
         previous,
@@ -170,7 +174,7 @@ module.exports = function defineGrammar(dialect) {
         '(',
         choice(
           seq(
-            $.expression, 
+            $.expression,
             field('type', optional($.type_annotation)),
             field('nominal_type', optional($.nominal_type_annotation)),
           ),
@@ -218,7 +222,7 @@ module.exports = function defineGrammar(dialect) {
         optional($._initializer)
       ),
 
-      nominal_type_annotation: $ => seq(';', $._nominal_type),
+      nominal_type_annotation: $ => prec.dynamic(999, seq(';', $._nominal_type)),
 
       tuple_parameter: $ => seq(
         field('name', choice($.identifier, $.rest_pattern)),
@@ -233,10 +237,10 @@ module.exports = function defineGrammar(dialect) {
         field('nominal_type', optional($.nominal_type_annotation)),
       ),
 
-      _nominal_type: $ => choice(
+      _nominal_type: $ => prec.dynamic(-500, choice(
         $._primary_nominal_type,
         $.function_nominal_type,
-      ),
+      )),
 
       optional_nominal_type: $ => seq($._nominal_type, '?'),
 
@@ -252,7 +256,9 @@ module.exports = function defineGrammar(dialect) {
         $.parenthesized_nominal_type,
         $.generic_nominal_type,
         // Literals may be implicitly casted to these types
-        $.predefined_nominal_type,
+        // TODO: This confuses tree-sitter because it seems to lex this when it shouldn't,
+        //   so for now we just parse these as _nominal_type_identifier
+        // $.predefined_nominal_type,
         $.object_nominal_type,
         $.array_nominal_type,
         $.tuple_nominal_type,
@@ -269,7 +275,7 @@ module.exports = function defineGrammar(dialect) {
         '(', $._nominal_type, ')'
       ),
 
-      predefined_nominal_type: $ => choice(
+      /* predefined_nominal_type: $ => choice(
         'Number',
         'Integer',
         'Float',
@@ -281,7 +287,7 @@ module.exports = function defineGrammar(dialect) {
         'Object',
         'Array',
         'Function',
-      ),
+      ), */
 
       type_arguments: $ => seq(
         '<', commaSep1(choice($._type, $.nominal_type_denoted)), optional(','), '>'

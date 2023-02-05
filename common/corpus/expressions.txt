@@ -109,17 +109,19 @@ Array with empty elements
     (array (identifier) (identifier) (identifier))))
 
 ==================================
-Variable named 'module'
+Variable named 'module' (modified)
 ==================================
 
+// Modified from tree-sitter-typescript as it is actually a different parse in NominalScript
 var module;
-module;
+module();
 
 ---
 
 (program
+  (comment)
   (variable_declaration (variable_declarator (identifier)))
-  (expression_statement (identifier)))
+  (expression_statement (call_expression (identifier) (arguments))))
 
 ==================================
 Multi-line variable declarations
