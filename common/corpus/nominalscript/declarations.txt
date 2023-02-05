@@ -710,31 +710,40 @@ declare module "example" { }
 
 (program
   (module
-    (identifier))
-  (ERROR
-    (variable_declaration
-      (variable_declarator
-        (identifier)
-        (nominal_type_annotation
-          (object_nominal_type))))
     (identifier)
-    (type_parameters
-      (nominal_type_identifier))
-    (identifier)
-    (ERROR
-      (identifier)
-      (type_arguments
-        (type_identifier))
-      (identifier)
-      (type_arguments
-        (type_identifier))
-      (identifier)
+    (statement_block
+      (variable_declaration
+        (variable_declarator
+          (identifier)
+          (nominal_type_annotation
+            (object_nominal_type))))
+      (export_statement
+        (function_signature
+          (identifier)
+          (type_parameters
+            (nominal_type_identifier))
+          (formal_parameters
+            (optional_parameter
+              (identifier)
+              (nominal_type_annotation
+                (generic_nominal_type
+                  (nominal_type_identifier)
+                  (nominal_type_arguments
+                    (nominal_type_identifier))))))
+          (nominal_type_annotation
+            (generic_nominal_type
+              (nominal_type_identifier)
+              (nominal_type_arguments
+                (nominal_type_identifier))))))))
+  (ambient_declaration
+    (module
+      (string
+        (string_fragment))))
+  (ambient_declaration
+    (module
       (string
         (string_fragment))
-      (identifier)
-      (string
-        (string_fragment)))
-    (object_nominal_type)))
+      (statement_block))))
 
 =================================
 Weird but valid place for a nominalscript annotation
@@ -1034,11 +1043,49 @@ class Foo {
         (statement_block)))))
 
 =======================================
+NominalScript method with optional param
+=======================================
+
+function foo(xyz?: number; Integer) {}
+function bar(xyz? ; Number) {}
+function baz(xyz?; Number) {}
+
+---
+
+(program
+  (function_declaration
+    (identifier)
+    (formal_parameters
+      (optional_parameter
+        (identifier)
+        (type_annotation
+          (predefined_type))
+        (nominal_type_annotation
+          (nominal_type_identifier))))
+    (statement_block))
+  (function_declaration
+    (identifier)
+    (formal_parameters
+      (optional_parameter
+        (identifier)
+        (nominal_type_annotation
+          (nominal_type_identifier))))
+    (statement_block))
+  (function_declaration
+    (identifier)
+    (formal_parameters
+      (optional_parameter
+        (identifier)
+        (nominal_type_annotation
+          (nominal_type_identifier))))
+    (statement_block)))
+
+=======================================
 More nominalscript annotations | Classes with method signatures
 =======================================
 
 class Foo {
-  public async waitFor<T, ;T>(func: () => T | Promise<T | undefined>; () => T, accept?: (result: T) => boolean | Promise<boolean>; (T) => Boolean, timeoutMessage?; String, retryCount?; Number); Promise<T>;
+  public async waitFor<T, ;T>(func: () => T | Promise<T | undefined>; () => T, accept?: (result: T) => boolean | Promise<boolean>; (T) => Boolean, timeoutMessage?: String, retryCount?; Number); Promise<T>;
 
   public readonly async bar?<;T>();
   private static bar();
@@ -1046,6 +1093,86 @@ class Foo {
 }
 
 ---
+
+(program
+  (class_declaration
+    (type_identifier)
+    (class_body
+      (method_signature
+        (accessibility_modifier)
+        (property_identifier)
+        (type_parameters
+          (type_parameter
+            (type_identifier))
+          (nominal_type_identifier))
+        (formal_parameters
+          (required_parameter
+            (identifier)
+            (type_annotation
+              (function_type
+                (formal_parameters)
+                (union_type
+                  (type_identifier)
+                  (generic_type
+                    (type_identifier)
+                    (type_arguments
+                      (union_type
+                        (type_identifier)
+                        (literal_type
+                          (undefined))))))))
+            (nominal_type_annotation
+              (function_nominal_type
+                (nominal_formal_parameters)
+                (nominal_type_identifier))))
+          (optional_parameter
+            (identifier)
+            (type_annotation
+              (function_type
+                (formal_parameters
+                  (required_parameter
+                    (identifier)
+                    (type_annotation
+                      (type_identifier))))
+                (union_type
+                  (predefined_type)
+                  (generic_type
+                    (type_identifier)
+                    (type_arguments
+                      (predefined_type))))))
+            (nominal_type_annotation
+              (function_nominal_type
+                (nominal_formal_parameters
+                  (nominal_type_identifier))
+                (nominal_type_identifier))))
+          (optional_parameter
+            (identifier)
+            (type_annotation
+              (type_identifier)))
+          (optional_parameter
+            (identifier)
+            (nominal_type_annotation
+              (nominal_type_identifier))))
+        (nominal_type_annotation
+          (generic_nominal_type
+            (nominal_type_identifier)
+            (nominal_type_arguments
+              (nominal_type_identifier)))))
+      (method_signature
+        (accessibility_modifier)
+        (property_identifier)
+        (type_parameters
+          (nominal_type_identifier))
+        (formal_parameters))
+      (method_signature
+        (accessibility_modifier)
+        (property_identifier)
+        (formal_parameters))
+      (method_signature
+        (accessibility_modifier)
+        (property_identifier)
+        (formal_parameters)
+        (nominal_type_annotation
+          (nominal_type_identifier))))))
 
 =======================================
 Classes with property names as strings or numbers
@@ -1161,12 +1288,12 @@ Classes with decorators
             (identifier)
             (nominal_type_annotation
               (nominal_type_identifier)))
-          (ERROR
+          (optional_parameter
             (decorator
               (identifier))
             (identifier)
-            (ERROR)
-            (identifier)))
+            (nominal_type_annotation
+              (nominal_type_identifier))))
         (statement_block)))))
 
 =======================================

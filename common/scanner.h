@@ -186,6 +186,8 @@ static bool scan_ternary_qmark(TSLexer *lexer) {
   if (lexer->lookahead == ':') return false;
   if (lexer->lookahead == ')') return false;
   if (lexer->lookahead == ',') return false;
+  // Nominal token
+  if (lexer->lookahead == ';') return false;
 
   if (lexer->lookahead == '.') {
     advance(lexer);

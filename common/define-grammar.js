@@ -83,8 +83,6 @@ module.exports = function defineGrammar(dialect) {
       [$.object_pattern, $.object_nominal_type],
       [$.object_pattern, $.object_type, $.object_nominal_type],
       [$.object_type, $.object_nominal_type],
-      [$._call_signature],
-      [$.property_signature],
       [$.statement_block, $.object, $.object_nominal_type],
       [$.empty_statement, $.object_nominal_type],
       [$._primary_type, $.type_parameter, $.nominal_type_parameters],
@@ -106,7 +104,7 @@ module.exports = function defineGrammar(dialect) {
         optional('declare'),
         optional($.accessibility_modifier),
         choice(
-          seq(optional('static'), optional($.override_modifier), optional('readonly')),
+          seq(optional('static'), optional($.override_modifier), optional('readonly')), 
           seq(optional('abstract'), optional('readonly')),
           seq(optional('readonly'), optional('abstract')),
         ),
@@ -116,6 +114,7 @@ module.exports = function defineGrammar(dialect) {
         field('nominal_type', optional($.nominal_type_annotation)),
         optional($._initializer)
       ),
+
 
       catch_clause: $ => seq(
         'catch',
