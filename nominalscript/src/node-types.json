@@ -4390,7 +4390,7 @@
     },
     "children": {
       "multiple": false,
-      "required": false,
+      "required": true,
       "types": [
         {
           "type": "nominal_type_identifier",
@@ -4598,6 +4598,25 @@
     }
   },
   {
+    "type": "nominal_type_denoted",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "_primary_nominal_type",
+          "named": true
+        },
+        {
+          "type": "function_nominal_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "nominal_type_guard",
     "named": true,
     "fields": {
@@ -4625,6 +4644,21 @@
           }
         ]
       }
+    }
+  },
+  {
+    "type": "nominal_type_identifier_denoted",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "nominal_type_identifier",
+          "named": true
+        }
+      ]
     }
   },
   {
@@ -6219,10 +6253,6 @@
       "required": true,
       "types": [
         {
-          "type": "_primary_nominal_type",
-          "named": true
-        },
-        {
           "type": "_primary_type",
           "named": true
         },
@@ -6231,15 +6261,15 @@
           "named": true
         },
         {
-          "type": "function_nominal_type",
-          "named": true
-        },
-        {
           "type": "function_type",
           "named": true
         },
         {
           "type": "infer_type",
+          "named": true
+        },
+        {
+          "type": "nominal_type_denoted",
           "named": true
         },
         {
@@ -6310,10 +6340,10 @@
     "fields": {},
     "children": {
       "multiple": true,
-      "required": false,
+      "required": true,
       "types": [
         {
-          "type": "nominal_type_identifier",
+          "type": "nominal_type_identifier_denoted",
           "named": true
         },
         {

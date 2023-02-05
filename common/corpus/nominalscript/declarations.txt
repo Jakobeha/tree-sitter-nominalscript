@@ -721,7 +721,8 @@ declare module "example" { }
         (function_signature
           (identifier)
           (type_parameters
-            (nominal_type_identifier))
+            (nominal_type_identifier_denoted
+              (nominal_type_identifier)))
           (formal_parameters
             (optional_parameter
               (identifier)
@@ -847,8 +848,10 @@ export interface Foo {
           (function_signature
             (identifier)
             (type_parameters
-              (nominal_type_identifier)
-              (nominal_type_identifier))
+              (nominal_type_identifier_denoted
+                (nominal_type_identifier))
+              (nominal_type_identifier_denoted
+                (nominal_type_identifier)))
             (formal_parameters
               (required_parameter
                 (identifier)
@@ -1104,7 +1107,8 @@ class Foo {
         (type_parameters
           (type_parameter
             (type_identifier))
-          (nominal_type_identifier))
+          (nominal_type_identifier_denoted
+            (nominal_type_identifier)))
         (formal_parameters
           (required_parameter
             (identifier)
@@ -1161,7 +1165,8 @@ class Foo {
         (accessibility_modifier)
         (property_identifier)
         (type_parameters
-          (nominal_type_identifier))
+          (nominal_type_identifier_denoted
+            (nominal_type_identifier)))
         (formal_parameters))
       (method_signature
         (accessibility_modifier)

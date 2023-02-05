@@ -86,7 +86,7 @@ module.exports = function defineGrammar(dialect) {
       [$.statement_block, $.object, $.object_nominal_type],
       [$.empty_statement, $.object_nominal_type],
       [$._primary_type, $.type_parameter, $.nominal_type_parameters],
-      [$._primary_nominal_type, $._nominal_type_identifier_denoted],
+      [$._primary_nominal_type, $.nominal_type_identifier_denoted],
     ]),
 
     supertypes: ($, previous) => previous.concat([
@@ -166,7 +166,8 @@ module.exports = function defineGrammar(dialect) {
       ),
 
       nominal_import_export_specifier: $ => seq(
-        $._nominal_type_identifier_denoted,
+        $._nominal_token,
+        $._nominal_type_identifier,
         field('as', optional(seq('as', $.identifier))),
       ),
 
@@ -313,10 +314,10 @@ module.exports = function defineGrammar(dialect) {
       ), */
 
       type_arguments: $ => seq(
-        '<', commaSep1(choice($._type, $._nominal_type_denoted)), optional(','), '>'
+        '<', commaSep1(choice($._type, $.nominal_type_denoted)), optional(','), '>'
       ),
 
-      _nominal_type_denoted: $ => seq(
+      nominal_type_denoted: $ => seq(
         $._nominal_token,
         $._nominal_type
       ),
@@ -374,10 +375,10 @@ module.exports = function defineGrammar(dialect) {
       ),
 
       type_parameters: $ => seq(
-        '<', commaSep1(choice($.type_parameter, $._nominal_type_identifier_denoted)), optional(','), '>'
+        '<', commaSep1(choice($.type_parameter, $.nominal_type_identifier_denoted)), optional(','), '>'
       ),
 
-      _nominal_type_identifier_denoted: $ => seq(
+      nominal_type_identifier_denoted: $ => seq(
         $._nominal_token,
         $._nominal_type_identifier,
       ),

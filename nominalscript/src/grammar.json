@@ -9790,7 +9790,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "_nominal_type_denoted"
+                  "name": "nominal_type_denoted"
                 }
               ]
             },
@@ -9812,7 +9812,7 @@
                       },
                       {
                         "type": "SYMBOL",
-                        "name": "_nominal_type_denoted"
+                        "name": "nominal_type_denoted"
                       }
                     ]
                   }
@@ -10137,7 +10137,7 @@
                 },
                 {
                   "type": "SYMBOL",
-                  "name": "_nominal_type_identifier_denoted"
+                  "name": "nominal_type_identifier_denoted"
                 }
               ]
             },
@@ -10159,7 +10159,7 @@
                       },
                       {
                         "type": "SYMBOL",
-                        "name": "_nominal_type_identifier_denoted"
+                        "name": "nominal_type_identifier_denoted"
                       }
                     ]
                   }
@@ -10702,7 +10702,11 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_nominal_type_identifier_denoted"
+          "name": "_nominal_token"
+        },
+        {
+          "type": "SYMBOL",
+          "name": "_nominal_type_identifier"
         },
         {
           "type": "FIELD",
@@ -11006,7 +11010,7 @@
         }
       ]
     },
-    "_nominal_type_denoted": {
+    "nominal_type_denoted": {
       "type": "SEQ",
       "members": [
         {
@@ -11285,7 +11289,7 @@
         }
       ]
     },
-    "_nominal_type_identifier_denoted": {
+    "nominal_type_identifier_denoted": {
       "type": "SEQ",
       "members": [
         {
@@ -11996,7 +12000,7 @@
     ],
     [
       "_primary_nominal_type",
-      "_nominal_type_identifier_denoted"
+      "nominal_type_identifier_denoted"
     ]
   ],
   "precedences": [
