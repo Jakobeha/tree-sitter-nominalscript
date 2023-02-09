@@ -10886,6 +10886,10 @@
           {
             "type": "SYMBOL",
             "name": "function_nominal_type"
+          },
+          {
+            "type": "SYMBOL",
+            "name": "optional_nominal_type"
           }
         ]
       }
@@ -10895,42 +10899,11 @@
       "members": [
         {
           "type": "SYMBOL",
-          "name": "_nominal_type"
+          "name": "_primary_nominal_type"
         },
         {
           "type": "STRING",
           "value": "?"
-        }
-      ]
-    },
-    "_tuple_nominal_type_member": {
-      "type": "CHOICE",
-      "members": [
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "tuple_parameter"
-          },
-          "named": true,
-          "value": "required_parameter"
-        },
-        {
-          "type": "ALIAS",
-          "content": {
-            "type": "SYMBOL",
-            "name": "optional_tuple_parameter"
-          },
-          "named": true,
-          "value": "optional_parameter"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "optional_nominal_type"
-        },
-        {
-          "type": "SYMBOL",
-          "name": "_nominal_type"
         }
       ]
     },
@@ -10973,13 +10946,8 @@
             "type": "FIELD",
             "name": "name",
             "content": {
-              "type": "CHOICE",
-              "members": [
-                {
-                  "type": "SYMBOL",
-                  "name": "_nominal_type_identifier"
-                }
-              ]
+              "type": "SYMBOL",
+              "name": "_nominal_type_identifier"
             }
           },
           {
@@ -11384,7 +11352,7 @@
               "members": [
                 {
                   "type": "SYMBOL",
-                  "name": "_tuple_nominal_type_member"
+                  "name": "_nominal_type"
                 },
                 {
                   "type": "REPEAT",
@@ -11397,7 +11365,7 @@
                       },
                       {
                         "type": "SYMBOL",
-                        "name": "_tuple_nominal_type_member"
+                        "name": "_nominal_type"
                       }
                     ]
                   }
@@ -11949,7 +11917,7 @@
     ],
     [
       "_tuple_type_member",
-      "_tuple_nominal_type_member"
+      "_nominal_type"
     ],
     [
       "object",

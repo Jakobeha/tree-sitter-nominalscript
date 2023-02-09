@@ -75,7 +75,7 @@ module.exports = function defineGrammar(dialect) {
       [$.array_pattern, $.tuple_type, $.tuple_nominal_type],
       [$.optional_tuple_parameter, $._primary_nominal_type],
       [$.optional_tuple_parameter, $._primary_type, $._primary_nominal_type],
-      [$._tuple_type_member, $._tuple_nominal_type_member],
+      [$._tuple_type_member, $._nominal_type],
       [$.object, $.object_nominal_type],
       [$.object, $.object_pattern, $.object_nominal_type],
       [$.object, $.object_type, $.object_nominal_type],
@@ -264,16 +264,10 @@ module.exports = function defineGrammar(dialect) {
       _nominal_type: $ => prec.dynamic(-500, choice(
         $._primary_nominal_type,
         $.function_nominal_type,
+        $.optional_nominal_type,
       )),
 
-      optional_nominal_type: $ => seq($._nominal_type, '?'),
-
-      _tuple_nominal_type_member: $ => choice(
-        alias($.tuple_parameter, $.required_parameter),
-        alias($.optional_tuple_parameter, $.optional_parameter),
-        $.optional_nominal_type,
-        $._nominal_type,
-      ),
+      optional_nominal_type: $ => seq($._primary_nominal_type, '?'),
 
       _primary_nominal_type: $ => choice(
         $._nominal_type_identifier,
@@ -289,9 +283,7 @@ module.exports = function defineGrammar(dialect) {
       ),
 
       generic_nominal_type: $ => prec('call', seq(
-        field('name', choice(
-          $._nominal_type_identifier,
-        )),
+        field('name', $._nominal_type_identifier),
         field('nominal_type_arguments', $.nominal_type_arguments)
       )),
 
@@ -389,7 +381,7 @@ module.exports = function defineGrammar(dialect) {
 
       array_nominal_type: $ => seq($._primary_nominal_type, '[', ']'),
       tuple_nominal_type: $ => seq(
-        '[', commaSep($._tuple_nominal_type_member), optional(','), ']'
+        '[', commaSep($._nominal_type), optional(','), ']'
       ),
 
       function_nominal_type: $ => prec.left(seq(

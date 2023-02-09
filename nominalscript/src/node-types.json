@@ -2664,6 +2664,10 @@
           {
             "type": "function_nominal_type",
             "named": true
+          },
+          {
+            "type": "optional_nominal_type",
+            "named": true
           }
         ]
       }
@@ -4365,6 +4369,10 @@
         {
           "type": "function_nominal_type",
           "named": true
+        },
+        {
+          "type": "optional_nominal_type",
+          "named": true
         }
       ]
     }
@@ -4518,6 +4526,10 @@
         {
           "type": "function_nominal_type",
           "named": true
+        },
+        {
+          "type": "optional_nominal_type",
+          "named": true
         }
       ]
     }
@@ -4536,6 +4548,10 @@
         },
         {
           "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "optional_nominal_type",
           "named": true
         }
       ]
@@ -4611,6 +4627,10 @@
         },
         {
           "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "optional_nominal_type",
           "named": true
         }
       ]
@@ -4693,6 +4713,10 @@
           "named": true
         },
         {
+          "type": "optional_nominal_type",
+          "named": true
+        },
+        {
           "type": "primary_expression",
           "named": true
         }
@@ -4713,6 +4737,10 @@
         },
         {
           "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "optional_nominal_type",
           "named": true
         },
         {
@@ -4956,10 +4984,6 @@
       "types": [
         {
           "type": "_primary_nominal_type",
-          "named": true
-        },
-        {
-          "type": "function_nominal_type",
           "named": true
         }
       ]
@@ -5227,6 +5251,10 @@
         },
         {
           "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "optional_nominal_type",
           "named": true
         }
       ]
@@ -6101,14 +6129,6 @@
         },
         {
           "type": "optional_nominal_type",
-          "named": true
-        },
-        {
-          "type": "optional_parameter",
-          "named": true
-        },
-        {
-          "type": "required_parameter",
           "named": true
         }
       ]
