@@ -264,10 +264,10 @@ module.exports = function defineGrammar(dialect) {
       _nominal_type: $ => prec.dynamic(-500, choice(
         $._primary_nominal_type,
         $.function_nominal_type,
-        $.optional_nominal_type,
+        $.nullable_nominal_type,
       )),
 
-      optional_nominal_type: $ => seq($._primary_nominal_type, '?'),
+      nullable_nominal_type: $ => seq($._primary_nominal_type, '?'),
 
       _primary_nominal_type: $ => choice(
         $._nominal_type_identifier,

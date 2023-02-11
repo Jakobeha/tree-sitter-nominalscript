@@ -1454,6 +1454,34 @@ let a!; B;
       (nominal_type_annotation
         (nominal_type_identifier)))))
 
+==================================
+Nullable nominal types
+==================================
+
+var a; B?;
+let a; () => [String, B][]?;
+
+---
+
+(program
+  (variable_declaration
+    (variable_declarator
+      (identifier)
+      (nominal_type_annotation
+        (nullable_nominal_type
+          (nominal_type_identifier)))))
+  (lexical_declaration
+    (variable_declarator
+      (identifier)
+      (nominal_type_annotation
+        (function_nominal_type
+          (nominal_formal_parameters)
+          (nullable_nominal_type
+            (array_nominal_type
+              (tuple_nominal_type
+                (nominal_type_identifier)
+                (nominal_type_identifier)))))))))
+
 ====================================
 Top-level export
 ====================================

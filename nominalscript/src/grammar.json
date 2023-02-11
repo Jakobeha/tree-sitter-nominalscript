@@ -10889,12 +10889,12 @@
           },
           {
             "type": "SYMBOL",
-            "name": "optional_nominal_type"
+            "name": "nullable_nominal_type"
           }
         ]
       }
     },
-    "optional_nominal_type": {
+    "nullable_nominal_type": {
       "type": "SEQ",
       "members": [
         {
