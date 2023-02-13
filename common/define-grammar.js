@@ -393,9 +393,23 @@ module.exports = function defineGrammar(dialect) {
 
       nominal_formal_parameters: $ => seq(
         '(',
-        optional(seq(
-          commaSep1($._nominal_type),
-          optional(',')
+        optional(choice(
+          seq(
+            commaSep1($._nominal_type),
+            optional(seq(
+              ',',
+              optional(seq(
+                '...',
+                field('rest_type', $._nominal_type),
+                optional(','), // trailing comma
+              )),
+            ))
+          ),
+          seq(
+            '...',
+            field('rest_type', $._nominal_type),
+            optional(','), // trailing comma
+          )
         )),
         ')',
       ),

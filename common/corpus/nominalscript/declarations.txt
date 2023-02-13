@@ -1501,3 +1501,57 @@ export type; Foo; Boolean guard(x) { return x }
         (statement_block
           (return_statement
             (identifier)))))))
+
+====================================
+Functions types with rest parameter
+====================================
+
+export type; Foo; (String, ...Number[]) => Boolean guard(x) { return x }
+export type; Bar; (String?, ...[Number, String],) => Boolean guard(x) { return x }
+export type; Baz; (...String[]) => Void
+
+---
+
+(program
+  (export_statement
+    (nominal_type_declaration
+      (nominal_type_identifier)
+      (nominal_type_annotation
+        (function_nominal_type
+          (nominal_formal_parameters
+            (nominal_type_identifier)
+            (array_nominal_type
+              (nominal_type_identifier)))
+          (nominal_type_identifier)))
+      (nominal_type_guard
+        (identifier)
+        (statement_block
+          (return_statement
+            (identifier))))))
+  (export_statement
+    (nominal_type_declaration
+      (nominal_type_identifier)
+      (nominal_type_annotation
+        (function_nominal_type
+          (nominal_formal_parameters
+            (nullable_nominal_type
+              (nominal_type_identifier))
+            (tuple_nominal_type
+              (nominal_type_identifier)
+              (nominal_type_identifier)))
+          (nominal_type_identifier)))
+      (nominal_type_guard
+        (identifier)
+        (statement_block
+          (return_statement
+            (identifier))))))
+  (export_statement
+    (nominal_type_declaration
+      (nominal_type_identifier)
+      (nominal_type_annotation
+        (function_nominal_type
+          (nominal_formal_parameters
+            (array_nominal_type
+              (nominal_type_identifier)))
+          (nominal_type_identifier))))))
+

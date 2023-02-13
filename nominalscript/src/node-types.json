@@ -4357,7 +4357,26 @@
   {
     "type": "nominal_formal_parameters",
     "named": true,
-    "fields": {},
+    "fields": {
+      "rest_type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_primary_nominal_type",
+            "named": true
+          },
+          {
+            "type": "function_nominal_type",
+            "named": true
+          },
+          {
+            "type": "nullable_nominal_type",
+            "named": true
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": false,
