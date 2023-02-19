@@ -418,16 +418,14 @@ export { ;Qux as Abc };
       (export_specifier
         (identifier))
       (export_specifier
-        (nominal_import_export_specifier
-          (nominal_type_identifier)))
+        (nominal_type_identifier))
       (export_specifier
         (identifier))))
   (export_statement
     (export_clause
       (export_specifier
-        (nominal_import_export_specifier
-          (nominal_type_identifier)
-          (identifier))))))
+        (nominal_type_identifier)
+        (identifier)))))
 
 ==================================
 Import nominal types
@@ -445,8 +443,7 @@ import { ;Abc as Def, Ghi as Jkl, typeof Mno as Pqr } from 'stu'
         (import_specifier
           (identifier))
         (import_specifier
-          (nominal_import_export_specifier
-            (nominal_type_identifier)))
+          (nominal_type_identifier))
         (import_specifier
           (identifier))))
     (string
@@ -455,9 +452,8 @@ import { ;Abc as Def, Ghi as Jkl, typeof Mno as Pqr } from 'stu'
     (import_clause
       (named_imports
         (import_specifier
-          (nominal_import_export_specifier
-            (nominal_type_identifier)
-            (identifier)))
+          (nominal_type_identifier)
+          (identifier))
         (import_specifier
           (identifier)
           (identifier))
@@ -488,8 +484,7 @@ module C {
             (import_specifier
               (identifier))
             (import_specifier
-              (nominal_import_export_specifier
-                (nominal_type_identifier)))
+              (nominal_type_identifier))
             (import_specifier
               (identifier))))
         (string
@@ -498,9 +493,8 @@ module C {
         (import_clause
           (named_imports
             (import_specifier
-              (nominal_import_export_specifier
-                (nominal_type_identifier)
-                (identifier)))
+              (nominal_type_identifier)
+              (identifier))
             (import_specifier
               (identifier)
               (identifier))

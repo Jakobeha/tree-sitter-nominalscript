@@ -104,7 +104,7 @@ module.exports = function defineGrammar(dialect) {
         optional('declare'),
         optional($.accessibility_modifier),
         choice(
-          seq(optional('static'), optional($.override_modifier), optional('readonly')), 
+          seq(optional('static'), optional($.override_modifier), optional('readonly')),
           seq(optional('abstract'), optional('readonly')),
           seq(optional('readonly'), optional('abstract')),
         ),
@@ -157,18 +157,21 @@ module.exports = function defineGrammar(dialect) {
 
       export_specifier: ($, previous) => choice(
         previous,
-        $.nominal_import_export_specifier,
+        $._nominal_import_export_specifier,
       ),
 
       import_specifier: ($, previous) => choice(
         previous,
-        $.nominal_import_export_specifier,
+        $._nominal_import_export_specifier,
       ),
 
-      nominal_import_export_specifier: $ => seq(
+      _nominal_import_export_specifier: $ => seq(
         $._nominal_token,
         $._nominal_type_identifier,
-        field('as', optional(seq('as', $.identifier))),
+        optional(seq(
+          'as',
+          field('alias', $.identifier)
+        )),
       ),
 
       variable_declarator: $ => choice(
@@ -244,7 +247,7 @@ module.exports = function defineGrammar(dialect) {
       ),
 
       nominal_type_annotation: $ => prec.dynamic(999, seq(
-        $._nominal_token, 
+        $._nominal_token,
         $._nominal_type,
       )),
 

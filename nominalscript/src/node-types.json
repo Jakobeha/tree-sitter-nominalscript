@@ -2112,7 +2112,7 @@
       "required": false,
       "types": [
         {
-          "type": "nominal_import_export_specifier",
+          "type": "nominal_type_identifier",
           "named": true
         }
       ]
@@ -3212,7 +3212,7 @@
       "required": false,
       "types": [
         {
-          "type": "nominal_import_export_specifier",
+          "type": "nominal_type_identifier",
           "named": true
         }
       ]
@@ -4391,36 +4391,6 @@
         },
         {
           "type": "nullable_nominal_type",
-          "named": true
-        }
-      ]
-    }
-  },
-  {
-    "type": "nominal_import_export_specifier",
-    "named": true,
-    "fields": {
-      "as": {
-        "multiple": true,
-        "required": false,
-        "types": [
-          {
-            "type": "as",
-            "named": false
-          },
-          {
-            "type": "identifier",
-            "named": true
-          }
-        ]
-      }
-    },
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "nominal_type_identifier",
           "named": true
         }
       ]
