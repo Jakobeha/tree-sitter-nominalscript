@@ -53,7 +53,7 @@
         "node_modules/tree-sitter-typescript/queries/tags.scm"
       ],
       "injections": "node_modules/tree-sitter-typescript/queries/injections.scm",
-      "injection-regex": "^(njs|nominalscript)$"
+      "injection-regex": "^(ns|njs|nominalscript)$"
     }
   ]
 }
