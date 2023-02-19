@@ -15,5 +15,5 @@ try {
 }
 
 try {
-  module.exports.nominalscript.nodeTypeInfo = require("../../typescript/src/node-types.json");
+  module.exports.nominalscript.nodeTypeInfo = require("../../nominalscript/src/node-types.json");
 } catch (_) {}
