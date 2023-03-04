@@ -4501,6 +4501,29 @@
     }
   },
   {
+    "type": "nominal_supertypes",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": true,
+      "required": true,
+      "types": [
+        {
+          "type": "_primary_nominal_type",
+          "named": true
+        },
+        {
+          "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "nullable_nominal_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "nominal_type_annotation",
     "named": true,
     "fields": {},
@@ -4570,12 +4593,12 @@
           }
         ]
       },
-      "nominal_inherited_types": {
-        "multiple": true,
+      "nominal_supertypes": {
+        "multiple": false,
         "required": false,
         "types": [
           {
-            "type": "nominal_type_annotation",
+            "type": "nominal_supertypes",
             "named": true
           }
         ]
@@ -4595,34 +4618,11 @@
         "required": false,
         "types": [
           {
-            "type": "type_annotation",
+            "type": "typescript_supertype",
             "named": true
           }
         ]
       }
-    }
-  },
-  {
-    "type": "nominal_type_denoted",
-    "named": true,
-    "fields": {},
-    "children": {
-      "multiple": false,
-      "required": true,
-      "types": [
-        {
-          "type": "_primary_nominal_type",
-          "named": true
-        },
-        {
-          "type": "function_nominal_type",
-          "named": true
-        },
-        {
-          "type": "nullable_nominal_type",
-          "named": true
-        }
-      ]
     }
   },
   {
@@ -4656,13 +4656,17 @@
     }
   },
   {
-    "type": "nominal_type_identifier_denoted",
+    "type": "nominal_type_parameter",
     "named": true,
     "fields": {},
     "children": {
-      "multiple": false,
+      "multiple": true,
       "required": true,
       "types": [
+        {
+          "type": "nominal_supertypes",
+          "named": true
+        },
         {
           "type": "nominal_type_identifier",
           "named": true
@@ -4679,7 +4683,7 @@
       "required": true,
       "types": [
         {
-          "type": "nominal_type_identifier",
+          "type": "nominal_type_parameter",
           "named": true
         }
       ]
@@ -6262,11 +6266,19 @@
       "required": true,
       "types": [
         {
+          "type": "_primary_nominal_type",
+          "named": true
+        },
+        {
           "type": "_primary_type",
           "named": true
         },
         {
           "type": "constructor_type",
+          "named": true
+        },
+        {
+          "type": "function_nominal_type",
           "named": true
         },
         {
@@ -6278,7 +6290,7 @@
           "named": true
         },
         {
-          "type": "nominal_type_denoted",
+          "type": "nullable_nominal_type",
           "named": true
         },
         {
@@ -6352,7 +6364,7 @@
       "required": true,
       "types": [
         {
-          "type": "nominal_type_identifier_denoted",
+          "type": "nominal_type_parameter",
           "named": true
         },
         {
@@ -6445,6 +6457,37 @@
         },
         {
           "type": "subscript_expression",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
+    "type": "typescript_supertype",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "_primary_type",
+          "named": true
+        },
+        {
+          "type": "constructor_type",
+          "named": true
+        },
+        {
+          "type": "function_type",
+          "named": true
+        },
+        {
+          "type": "infer_type",
+          "named": true
+        },
+        {
+          "type": "readonly_type",
           "named": true
         }
       ]
@@ -6835,6 +6878,10 @@
   },
   {
     "type": "</template>",
+    "named": false
+  },
+  {
+    "type": "<:",
     "named": false
   },
   {

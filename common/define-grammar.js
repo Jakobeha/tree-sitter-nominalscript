@@ -30,6 +30,14 @@ module.exports = function defineGrammar(dialect) {
         $.parenthesized_nominal_type,
       ],
       [
+        $.nominal_type_parameter,
+        $._primary_nominal_type,
+      ],
+      [
+        $.nominal_supertypes,
+        $._nominal_type_denoted
+      ],
+      [
         'nominal_wrap_expression',
         $.expression,
       ],
@@ -86,7 +94,8 @@ module.exports = function defineGrammar(dialect) {
       [$.statement_block, $.object, $.object_nominal_type],
       [$.empty_statement, $.object_nominal_type],
       [$._primary_type, $.type_parameter, $.nominal_type_parameters],
-      [$._primary_nominal_type, $.nominal_type_identifier_denoted],
+      [$._primary_type, $.type_parameter, $.nominal_type_parameter],
+      [$.type_parameter, $.nominal_type_parameter],
     ]),
 
     supertypes: ($, previous) => previous.concat([
@@ -217,10 +226,21 @@ module.exports = function defineGrammar(dialect) {
         $._nominal_token,
         field('name', $._nominal_type_identifier),
         field('nominal_type_parameters', optional($.nominal_type_parameters)),
-        field('type', optional($.type_annotation)),
-        field('nominal_inherited_types', repeat(prec(500, $.nominal_type_annotation))),
+        field('type', optional($.typescript_supertype)),
+        field('nominal_supertypes', optional($.nominal_supertypes)),
         field('guard', optional($.nominal_type_guard)),
         $._semicolon
+      ),
+
+      typescript_supertype: $ => seq(
+          '<:',
+          $._type
+      ),
+
+      nominal_supertypes: $ => seq(
+          // Can't lex <; directly because it will also lex in `functio foo<;T>() {}`
+          '<', $._nominal_token,
+          sepBy1('&', prec.dynamic(9, $._nominal_type))
       ),
 
       nominal_type_guard: $ => seq(
@@ -246,7 +266,7 @@ module.exports = function defineGrammar(dialect) {
         optional($._initializer)
       ),
 
-      nominal_type_annotation: $ => prec.dynamic(999, seq(
+      nominal_type_annotation: $ => prec.dynamic(9, seq(
         $._nominal_token,
         $._nominal_type,
       )),
@@ -264,7 +284,7 @@ module.exports = function defineGrammar(dialect) {
         field('nominal_type', optional($.nominal_type_annotation)),
       ),
 
-      _nominal_type: $ => prec.dynamic(-500, choice(
+      _nominal_type: $ => prec.dynamic(-5, choice(
         $._primary_nominal_type,
         $.function_nominal_type,
         $.nullable_nominal_type,
@@ -309,10 +329,10 @@ module.exports = function defineGrammar(dialect) {
       ), */
 
       type_arguments: $ => seq(
-        '<', commaSep1(choice($._type, $.nominal_type_denoted)), optional(','), '>'
+        '<', commaSep1(choice($._type, $._nominal_type_denoted)), optional(','), '>'
       ),
 
-      nominal_type_denoted: $ => seq(
+      _nominal_type_denoted: $ => seq(
         $._nominal_token,
         $._nominal_type
       ),
@@ -321,7 +341,7 @@ module.exports = function defineGrammar(dialect) {
         '<', commaSep1($._nominal_type), optional(','), '>'
       ),
 
-      object_nominal_type: $ => prec.dynamic(-100, seq(
+      object_nominal_type: $ => prec.dynamic(-1, seq(
         choice('{', '{|'),
         optional(seq(
           optional(choice(',', ';')),
@@ -370,16 +390,21 @@ module.exports = function defineGrammar(dialect) {
       ),
 
       type_parameters: $ => seq(
-        '<', commaSep1(choice($.type_parameter, $.nominal_type_identifier_denoted)), optional(','), '>'
+        '<', commaSep1(choice($._nominal_type_parameter_denoted, $.type_parameter)), optional(','), '>'
       ),
 
-      nominal_type_identifier_denoted: $ => seq(
+      _nominal_type_parameter_denoted: $ => seq(
         $._nominal_token,
-        $._nominal_type_identifier,
+        $.nominal_type_parameter,
       ),
 
       nominal_type_parameters: $ => seq(
-        '<', commaSep1($._nominal_type_identifier), optional(','), '>'
+        '<', commaSep1($.nominal_type_parameter), optional(','), '>'
+      ),
+
+      nominal_type_parameter: $ => seq(
+        $._nominal_type_identifier,
+        optional($.nominal_supertypes)
       ),
 
       array_nominal_type: $ => seq($._primary_nominal_type, '[', ']'),

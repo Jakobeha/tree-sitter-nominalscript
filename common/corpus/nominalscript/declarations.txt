@@ -562,21 +562,21 @@ Nominal type declarations
 ==================================
 
 type; Foo
-type; Bar: number
-type; Baz; String
+type; Bar <: number
+type; Baz <; String
 type; Qux guard(a) {
   return a instanceof number
 }
-type; Abc: number guard(a) {
+type; Abc <: number guard(a) {
   return a % 2 === 0
 }
-type; Def; String guard(a) {
+type; Def <; String guard(a) {
   return a.length > 0
 }
-type; Ghi: number; Integer; Float guard(a) {
+type; Ghi <: number <; Integer & Float guard(a) {
   return a % 1 === 0
 }
-type; Jkl<T>: Mno<T>[]; Pqr<T, Integer, Stu[]>; T guard(a) {
+type; Jkl<T <; U[], U> <; Mno<T>[] & Pqr<T, Integer, Stu[]> & T guard(a) {
   if (a === 5) {
     return true
   } else {
@@ -591,11 +591,11 @@ type; Jkl<T>: Mno<T>[]; Pqr<T, Integer, Stu[]>; T guard(a) {
     (nominal_type_identifier))
   (nominal_type_declaration
     (nominal_type_identifier)
-    (type_annotation
+    (typescript_supertype
       (predefined_type)))
   (nominal_type_declaration
     (nominal_type_identifier)
-    (nominal_type_annotation
+    (nominal_supertypes
       (nominal_type_identifier)))
   (nominal_type_declaration
     (nominal_type_identifier)
@@ -608,7 +608,7 @@ type; Jkl<T>: Mno<T>[]; Pqr<T, Integer, Stu[]>; T guard(a) {
             (identifier))))))
   (nominal_type_declaration
     (nominal_type_identifier)
-    (type_annotation
+    (typescript_supertype
       (predefined_type))
     (nominal_type_guard
       (identifier)
@@ -621,7 +621,7 @@ type; Jkl<T>: Mno<T>[]; Pqr<T, Integer, Stu[]>; T guard(a) {
             (number))))))
   (nominal_type_declaration
     (nominal_type_identifier)
-    (nominal_type_annotation
+    (nominal_supertypes
       (nominal_type_identifier))
     (nominal_type_guard
       (identifier)
@@ -634,11 +634,10 @@ type; Jkl<T>: Mno<T>[]; Pqr<T, Integer, Stu[]>; T guard(a) {
             (number))))))
   (nominal_type_declaration
     (nominal_type_identifier)
-    (type_annotation
+    (typescript_supertype
       (predefined_type))
-    (nominal_type_annotation
-      (nominal_type_identifier))
-    (nominal_type_annotation
+    (nominal_supertypes
+      (nominal_type_identifier)
       (nominal_type_identifier))
     (nominal_type_guard
       (identifier)
@@ -652,22 +651,26 @@ type; Jkl<T>: Mno<T>[]; Pqr<T, Integer, Stu[]>; T guard(a) {
   (nominal_type_declaration
     (nominal_type_identifier)
     (nominal_type_parameters
-      (nominal_type_identifier))
-    (type_annotation
-      (array_type
-        (generic_type
-          (type_identifier)
-          (type_arguments
-            (type_identifier)))))
-    (nominal_type_annotation
+      (nominal_type_parameter
+        (nominal_type_identifier)
+        (nominal_supertypes
+          (array_nominal_type
+            (nominal_type_identifier))))
+      (nominal_type_parameter
+        (nominal_type_identifier)))
+    (nominal_supertypes
+      (array_nominal_type
+        (generic_nominal_type
+          (nominal_type_identifier)
+          (nominal_type_arguments
+            (nominal_type_identifier))))
       (generic_nominal_type
         (nominal_type_identifier)
         (nominal_type_arguments
           (nominal_type_identifier)
           (nominal_type_identifier)
           (array_nominal_type
-            (nominal_type_identifier)))))
-    (nominal_type_annotation
+            (nominal_type_identifier))))
       (nominal_type_identifier))
     (nominal_type_guard
       (identifier)
@@ -715,7 +718,7 @@ declare module "example" { }
         (function_signature
           (identifier)
           (type_parameters
-            (nominal_type_identifier_denoted
+            (nominal_type_parameter
               (nominal_type_identifier)))
           (formal_parameters
             (optional_parameter
@@ -828,7 +831,7 @@ Nominal generics
 =================================
 
 export interface Foo {
-  export function OrderedMap<;K, ;V>(iter; IterableKeyed<K, V>); OrderedMap<K, V>;
+  export function OrderedMap<;K <; Hashable, ;V>(iter; IterableKeyed<K, V>); OrderedMap<K, V>;
 }
 
 ---
@@ -842,9 +845,11 @@ export interface Foo {
           (function_signature
             (identifier)
             (type_parameters
-              (nominal_type_identifier_denoted
-                (nominal_type_identifier))
-              (nominal_type_identifier_denoted
+              (nominal_type_parameter
+                (nominal_type_identifier)
+                (nominal_supertypes
+                  (nominal_type_identifier)))
+              (nominal_type_parameter
                 (nominal_type_identifier)))
             (formal_parameters
               (required_parameter
@@ -934,7 +939,8 @@ var fooBar = [Foo, Bar];[foo, bar]
                   (nominal_method_signature
                     (property_identifier)
                     (nominal_type_parameters
-                      (nominal_type_identifier))
+                      (nominal_type_parameter
+                        (nominal_type_identifier)))
                     (nominal_formal_parameters
                       (generic_nominal_type
                         (nominal_type_identifier)
@@ -1101,7 +1107,7 @@ class Foo {
         (type_parameters
           (type_parameter
             (type_identifier))
-          (nominal_type_identifier_denoted
+          (nominal_type_parameter
             (nominal_type_identifier)))
         (formal_parameters
           (required_parameter
@@ -1159,7 +1165,7 @@ class Foo {
         (accessibility_modifier)
         (property_identifier)
         (type_parameters
-          (nominal_type_identifier_denoted
+          (nominal_type_parameter
             (nominal_type_identifier)))
         (formal_parameters))
       (method_signature
@@ -1480,7 +1486,9 @@ let a; () => [String, B][]?;
 Top-level export
 ====================================
 
-export type; Foo; Boolean guard(x) { return x }
+export type; Not<T <; Boolean> guard(x) { return !guard(x) }
+export type; True <; Boolean & Not<False> guard(x) { return x }
+export type; False <; Boolean & Not<True>
 
 ---
 
@@ -1488,21 +1496,51 @@ export type; Foo; Boolean guard(x) { return x }
   (export_statement
     (nominal_type_declaration
       (nominal_type_identifier)
-      (nominal_type_annotation
-        (nominal_type_identifier))
+      (nominal_type_parameters
+        (nominal_type_parameter
+          (nominal_type_identifier)
+          (nominal_supertypes
+            (nominal_type_identifier))))
       (nominal_type_guard
         (identifier)
         (statement_block
           (return_statement
-            (identifier)))))))
+            (unary_expression
+              (call_expression
+                (identifier)
+                (arguments
+                  (identifier)))))))))
+  (export_statement
+    (nominal_type_declaration
+      (nominal_type_identifier)
+      (nominal_supertypes
+        (nominal_type_identifier)
+        (generic_nominal_type
+          (nominal_type_identifier)
+          (nominal_type_arguments
+            (nominal_type_identifier))))
+      (nominal_type_guard
+        (identifier)
+        (statement_block
+          (return_statement
+            (identifier))))))
+  (export_statement
+    (nominal_type_declaration
+      (nominal_type_identifier)
+      (nominal_supertypes
+        (nominal_type_identifier)
+        (generic_nominal_type
+          (nominal_type_identifier)
+          (nominal_type_arguments
+            (nominal_type_identifier)))))))
 
 ====================================
 Functions types with rest parameter
 ====================================
 
-export type; Foo; (String, ...Number[]) => Boolean guard(x) { return x }
-export type; Bar; (String?, ...[Number, String],) => Boolean guard(x) { return x }
-export type; Baz; (...String[]) => Void
+export type; Foo <; (String, ...Number[]) => Boolean guard(x) { return x }
+export type; Bar <; (String?, ...[Number, String],) => Boolean guard(x) { return x }
+export type; Baz <; <T>(...T[]) => Void
 
 ---
 
@@ -1510,7 +1548,7 @@ export type; Baz; (...String[]) => Void
   (export_statement
     (nominal_type_declaration
       (nominal_type_identifier)
-      (nominal_type_annotation
+      (nominal_supertypes
         (function_nominal_type
           (nominal_formal_parameters
             (nominal_type_identifier)
@@ -1525,7 +1563,7 @@ export type; Baz; (...String[]) => Void
   (export_statement
     (nominal_type_declaration
       (nominal_type_identifier)
-      (nominal_type_annotation
+      (nominal_supertypes
         (function_nominal_type
           (nominal_formal_parameters
             (nullable_nominal_type
@@ -1542,8 +1580,11 @@ export type; Baz; (...String[]) => Void
   (export_statement
     (nominal_type_declaration
       (nominal_type_identifier)
-      (nominal_type_annotation
+      (nominal_supertypes
         (function_nominal_type
+          (nominal_type_parameters
+            (nominal_type_parameter
+              (nominal_type_identifier)))
           (nominal_formal_parameters
             (array_nominal_type
               (nominal_type_identifier)))
