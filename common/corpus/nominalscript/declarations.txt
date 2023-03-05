@@ -877,7 +877,7 @@ declare namespace moment {
   export var x; String;
   export var foo; {
     bar; Bar,
-    baz<Qux>(Def<Qux>)
+    baz<Qux>(Def<Qux>); Void,
     ghi; (Jkl) => {
       nmo; Pqr
     },
@@ -945,7 +945,9 @@ var fooBar = [Foo, Bar];[foo, bar]
                       (generic_nominal_type
                         (nominal_type_identifier)
                         (nominal_type_arguments
-                          (nominal_type_identifier)))))
+                          (nominal_type_identifier))))
+                    (nominal_type_annotation
+                      (nominal_type_identifier)))
                   (nominal_property_signature
                     (property_identifier)
                     (nominal_type_annotation

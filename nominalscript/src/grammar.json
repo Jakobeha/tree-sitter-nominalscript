@@ -11303,16 +11303,8 @@
           "type": "FIELD",
           "name": "return_type",
           "content": {
-            "type": "CHOICE",
-            "members": [
-              {
-                "type": "SYMBOL",
-                "name": "nominal_type_annotation"
-              },
-              {
-                "type": "BLANK"
-              }
-            ]
+            "type": "SYMBOL",
+            "name": "nominal_type_annotation"
           }
         }
       ]

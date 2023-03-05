@@ -4448,7 +4448,7 @@
       },
       "return_type": {
         "multiple": false,
-        "required": false,
+        "required": true,
         "types": [
           {
             "type": "nominal_type_annotation",

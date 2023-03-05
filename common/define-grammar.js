@@ -386,7 +386,7 @@ module.exports = function defineGrammar(dialect) {
         field('name', $._property_name),
         field('nominal_type_parameters', optional($.nominal_type_parameters)),
         field('parameters', $.nominal_formal_parameters),
-        field('return_type', optional($.nominal_type_annotation)),
+        field('return_type', $.nominal_type_annotation),
       ),
 
       type_parameters: $ => seq(
