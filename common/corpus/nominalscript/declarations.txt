@@ -1592,3 +1592,93 @@ export type; Baz <; <T>(...T[]) => Void
               (nominal_type_identifier)))
           (nominal_type_identifier))))))
 
+====================================
+Variance bounds, this parameters, trailing guards (new features)
+====================================
+
+export type; Not<cov T <; Boolean> guard(cov) { return !guard(cov); }
+module Fobar {
+    type; Foo<cov A, con B, inv C, biv B <; C>
+        <: number
+        <; (this; A) => Void & (this; B, Bar) => Void & (this; C, ...Baz) => <cov D>(this; D ,) => Void
+        guard(this) { return !guard(this, cov, con, inv, biv); }
+    guard(this_is_not_a_guard_but_an_expression)
+}
+
+---
+
+(program
+  (export_statement
+    (nominal_type_declaration
+      (nominal_type_identifier)
+      (nominal_type_parameters
+        (nominal_type_parameter
+          (nominal_type_identifier)
+          (nominal_supertypes
+            (nominal_type_identifier))))
+      (nominal_type_guard
+        (identifier)
+        (statement_block
+          (return_statement
+            (unary_expression
+              (call_expression
+                (identifier)
+                (arguments
+                  (identifier)))))))))
+  (module
+    (identifier)
+    (statement_block
+      (nominal_type_declaration
+        (nominal_type_identifier)
+        (nominal_type_parameters
+          (nominal_type_parameter
+            (nominal_type_identifier))
+          (nominal_type_parameter
+            (nominal_type_identifier))
+          (nominal_type_parameter
+            (nominal_type_identifier))
+          (nominal_type_parameter
+            (nominal_type_identifier)
+            (nominal_supertypes
+              (nominal_type_identifier))))
+        (typescript_supertype
+          (predefined_type))
+        (nominal_supertypes
+          (function_nominal_type
+            (nominal_formal_parameters
+              (nominal_type_identifier))
+            (nominal_type_identifier))
+          (function_nominal_type
+            (nominal_formal_parameters
+              (nominal_type_identifier)
+              (nominal_type_identifier))
+            (nominal_type_identifier))
+          (function_nominal_type
+            (nominal_formal_parameters
+              (nominal_type_identifier)
+              (nominal_type_identifier))
+            (function_nominal_type
+              (nominal_type_parameters
+                (nominal_type_parameter
+                  (nominal_type_identifier)))
+              (nominal_formal_parameters
+                (nominal_type_identifier))
+              (nominal_type_identifier))))
+        (nominal_type_guard
+            (identifier)
+            (statement_block
+              (return_statement
+              (unary_expression
+                (call_expression
+                (identifier)
+                (arguments
+                  (this)
+                  (identifier)
+                  (identifier)
+                  (identifier)
+                  (identifier))))))))
+      (expression_statement
+        (call_expression
+          (identifier)
+          (arguments
+            (identifier)))))))

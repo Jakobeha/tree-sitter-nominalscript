@@ -4375,6 +4375,24 @@
             "named": true
           }
         ]
+      },
+      "this_type": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "_primary_nominal_type",
+            "named": true
+          },
+          {
+            "type": "function_nominal_type",
+            "named": true
+          },
+          {
+            "type": "nullable_nominal_type",
+            "named": true
+          }
+        ]
       }
     },
     "children": {
@@ -4658,7 +4676,30 @@
   {
     "type": "nominal_type_parameter",
     "named": true,
-    "fields": {},
+    "fields": {
+      "variance": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "biv",
+            "named": false
+          },
+          {
+            "type": "con",
+            "named": false
+          },
+          {
+            "type": "cov",
+            "named": false
+          },
+          {
+            "type": "inv",
+            "named": false
+          }
+        ]
+      }
+    },
     "children": {
       "multiple": true,
       "required": true,
@@ -6050,6 +6091,16 @@
     }
   },
   {
+    "type": "this",
+    "named": true,
+    "fields": {}
+  },
+  {
+    "type": "this_type",
+    "named": true,
+    "fields": {}
+  },
+  {
     "type": "throw_statement",
     "named": true,
     "fields": {},
@@ -7009,6 +7060,10 @@
     "named": false
   },
   {
+    "type": "biv",
+    "named": false
+  },
+  {
     "type": "boolean",
     "named": false
   },
@@ -7033,11 +7088,19 @@
     "named": true
   },
   {
+    "type": "con",
+    "named": false
+  },
+  {
     "type": "const",
     "named": false
   },
   {
     "type": "continue",
+    "named": false
+  },
+  {
+    "type": "cov",
     "named": false
   },
   {
@@ -7145,6 +7208,10 @@
     "named": false
   },
   {
+    "type": "inv",
+    "named": false
+  },
+  {
     "type": "is",
     "named": false
   },
@@ -7186,11 +7253,11 @@
   },
   {
     "type": "number",
-    "named": false
+    "named": true
   },
   {
     "type": "number",
-    "named": true
+    "named": false
   },
   {
     "type": "object",
@@ -7294,11 +7361,7 @@
   },
   {
     "type": "this",
-    "named": true
-  },
-  {
-    "type": "this_type",
-    "named": true
+    "named": false
   },
   {
     "type": "throw",

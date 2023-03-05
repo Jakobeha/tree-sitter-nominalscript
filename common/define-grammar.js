@@ -8,6 +8,10 @@ module.exports = function defineGrammar(dialect) {
 
     precedences: ($, previous) => previous.concat([
       [
+        $.nominal_type_guard,
+        $.nominal_type_declaration,
+      ],
+      [
         $.nominal_type_declaration,
         $.nominal_type_annotation,
         $._primary_nominal_type,
@@ -36,6 +40,10 @@ module.exports = function defineGrammar(dialect) {
       [
         $.nominal_supertypes,
         $._nominal_type_denoted
+      ],
+      [
+        $.nominal_formal_parameters,
+        $.this,
       ],
       [
         'nominal_wrap_expression',
@@ -104,6 +112,7 @@ module.exports = function defineGrammar(dialect) {
 
     inline: ($, previous) => previous.concat([
       $._nominal_type_identifier,
+      $._nominal_remaining_parameters
     ]),
 
     rules: {
@@ -233,17 +242,23 @@ module.exports = function defineGrammar(dialect) {
       ),
 
       typescript_supertype: $ => seq(
-          '<:',
-          $._type
+        '<:',
+        $._type
       ),
 
       nominal_supertypes: $ => seq(
-          // Can't lex <; directly because it will also lex in `functio foo<;T>() {}`
-          '<', $._nominal_token,
-          sepBy1('&', prec.dynamic(9, $._nominal_type))
+        // Can't lex <; directly because it will also lex in `functio foo<;T>() {}`
+        '<', $._nominal_token,
+        sepBy1('&', prec.dynamic(9, $._nominal_type))
       ),
 
       nominal_type_guard: $ => seq(
+        // Optional semicolon makes this parseable
+        //   type; Foo<cov A, con B, inv C, biv B <; C>
+        //       <: number
+        //       <; (this; A) => Void & (this; B, Bar) => Void & (this; C, ...Baz) => <cov D>(this; D ,) => Void
+        //       guard(this) { return !guard(this, cov, con, inv, biv); }
+        optional($._automatic_semicolon),
         'guard',
         '(',
         field('bound', $._identifier),
@@ -403,6 +418,7 @@ module.exports = function defineGrammar(dialect) {
       ),
 
       nominal_type_parameter: $ => seq(
+        field('variance', optional(choice('biv', 'cov', 'con', 'inv'))),
         $._nominal_type_identifier,
         optional($.nominal_supertypes)
       ),
@@ -423,23 +439,26 @@ module.exports = function defineGrammar(dialect) {
         '(',
         optional(choice(
           seq(
-            commaSep1($._nominal_type),
-            optional(seq(
-              ',',
-              optional(seq(
-                '...',
-                field('rest_type', $._nominal_type),
-                optional(','), // trailing comma
-              )),
-            ))
+            'this', $._nominal_token, field('this_type', $._nominal_type),
+            optional(seq(',', optional($._nominal_remaining_parameters))),
           ),
-          seq(
-            '...',
-            field('rest_type', $._nominal_type),
-            optional(','), // trailing comma
-          )
+          $._nominal_remaining_parameters
         )),
         ')',
+      ),
+
+      _nominal_remaining_parameters: $ => choice(
+        seq(
+          commaSep1($._nominal_type),
+          optional(seq(',', optional($._nominal_rest_parameter)))
+        ),
+        $._nominal_rest_parameter,
+      ),
+
+      _nominal_rest_parameter: $ => seq(
+        '...',
+        field('rest_type', $._nominal_type),
+        optional(','), // trailing comma
       ),
 
       _nominal_type_identifier: $ => alias($.identifier, $.nominal_type_identifier),
