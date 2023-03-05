@@ -104,6 +104,7 @@ module.exports = function defineGrammar(dialect) {
       [$._primary_type, $.type_parameter, $.nominal_type_parameters],
       [$._primary_type, $.type_parameter, $.nominal_type_parameter],
       [$.type_parameter, $.nominal_type_parameter],
+      [$.parenthesized_nominal_type, $._optional_nominal_type],
     ]),
 
     supertypes: ($, previous) => previous.concat([
@@ -378,13 +379,14 @@ module.exports = function defineGrammar(dialect) {
         optional($.override_modifier),
         optional('readonly'),
         field('name', $._property_name),
-        optional('?'),
+        field('is_optional', optional('?')),
         field('type', optional($.type_annotation)),
         field('nominal_type', optional($.nominal_type_annotation)),
       ),
 
       nominal_property_signature: $ => seq(
         field('name', $._property_name),
+        field('is_optional', optional('?')),
         field('type', $.nominal_type_annotation)
       ),
 
@@ -399,6 +401,7 @@ module.exports = function defineGrammar(dialect) {
 
       nominal_method_signature: $ => seq(
         field('name', $._property_name),
+        field('is_optional', optional('?')),
         field('nominal_type_parameters', optional($.nominal_type_parameters)),
         field('parameters', $.nominal_formal_parameters),
         field('return_type', $.nominal_type_annotation),
@@ -425,8 +428,12 @@ module.exports = function defineGrammar(dialect) {
 
       array_nominal_type: $ => seq($._primary_nominal_type, '[', ']'),
       tuple_nominal_type: $ => seq(
-        '[', commaSep($._nominal_type), optional(','), ']'
+        '[', commaSep($._optional_nominal_type), optional(','), ']'
       ),
+
+      _optional_nominal_type: $ => choice($.optional_nominal_type, $._nominal_type),
+
+      optional_nominal_type: $ => seq('?', $._nominal_type),
 
       function_nominal_type: $ => prec.left(seq(
         field('nominal_type_parameters', optional($.nominal_type_parameters)),
@@ -449,7 +456,7 @@ module.exports = function defineGrammar(dialect) {
 
       _nominal_remaining_parameters: $ => choice(
         seq(
-          commaSep1($._nominal_type),
+          commaSep1($._optional_nominal_type),
           optional(seq(',', optional($._nominal_rest_parameter)))
         ),
         $._nominal_rest_parameter,

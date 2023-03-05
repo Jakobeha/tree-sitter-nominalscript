@@ -4410,6 +4410,10 @@
         {
           "type": "nullable_nominal_type",
           "named": true
+        },
+        {
+          "type": "optional_nominal_type",
+          "named": true
         }
       ]
     }
@@ -4418,6 +4422,16 @@
     "type": "nominal_method_signature",
     "named": true,
     "fields": {
+      "is_optional": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "?",
+            "named": false
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -4480,6 +4494,16 @@
     "type": "nominal_property_signature",
     "named": true,
     "fields": {
+      "is_optional": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "?",
+            "named": false
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -5024,6 +5048,29 @@
     "fields": {}
   },
   {
+    "type": "optional_nominal_type",
+    "named": true,
+    "fields": {},
+    "children": {
+      "multiple": false,
+      "required": true,
+      "types": [
+        {
+          "type": "_primary_nominal_type",
+          "named": true
+        },
+        {
+          "type": "function_nominal_type",
+          "named": true
+        },
+        {
+          "type": "nullable_nominal_type",
+          "named": true
+        }
+      ]
+    }
+  },
+  {
     "type": "optional_parameter",
     "named": true,
     "fields": {
@@ -5353,6 +5400,16 @@
     "type": "property_signature",
     "named": true,
     "fields": {
+      "is_optional": {
+        "multiple": false,
+        "required": false,
+        "types": [
+          {
+            "type": "?",
+            "named": false
+          }
+        ]
+      },
       "name": {
         "multiple": false,
         "required": true,
@@ -6173,6 +6230,10 @@
         },
         {
           "type": "nullable_nominal_type",
+          "named": true
+        },
+        {
+          "type": "optional_nominal_type",
           "named": true
         }
       ]

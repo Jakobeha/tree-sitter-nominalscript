@@ -1593,7 +1593,7 @@ export type; Baz <; <T>(...T[]) => Void
           (nominal_type_identifier))))))
 
 ====================================
-Variance bounds, this parameters, trailing guards (new features)
+Variance bounds, this parameters, trailing guards
 ====================================
 
 export type; Not<cov T <; Boolean> guard(cov) { return !guard(cov); }
@@ -1682,3 +1682,158 @@ module Fobar {
           (identifier)
           (arguments
             (identifier)))))))
+
+====================================
+Optional nominal types
+====================================
+
+let a; [Foo, ?Bar] = [new Foo(), new Bar()];
+let b; [Foo, ?Bar, ?{ field; Baz }][] = [[new Foo()], [new Foo(), null], [new Foo(), null, { field: new Baz() }]];
+let c; (Foo, ?Bar) => Void = (x, y) => x; c(12);
+let d; (Foo, ?Bar, ...[?Baz, ?(Qux) => Int?, ?Abc]) => Void = (x, y, z, w) => x; d(12, 14, 16);
+type; E <; { field?; E, ignore?(); Void }
+let e; E = { field: { field: { field: {} } } };
+
+---
+
+(program
+  (lexical_declaration
+    (variable_declarator
+      (identifier)
+      (nominal_type_annotation
+        (tuple_nominal_type
+          (nominal_type_identifier)
+          (optional_nominal_type
+            (nominal_type_identifier))))
+      (array
+        (new_expression
+          (identifier)
+          (arguments))
+        (new_expression
+          (identifier)
+          (arguments)))))
+  (lexical_declaration
+    (variable_declarator
+      (identifier)
+      (nominal_type_annotation
+        (array_nominal_type
+          (tuple_nominal_type
+            (nominal_type_identifier)
+            (optional_nominal_type
+              (nominal_type_identifier))
+            (optional_nominal_type
+              (object_nominal_type
+                (nominal_property_signature
+                  (property_identifier)
+                  (nominal_type_annotation
+                    (nominal_type_identifier))))))))
+      (array
+        (array
+          (new_expression
+            (identifier)
+            (arguments)))
+        (array
+          (new_expression
+            (identifier)
+            (arguments))
+          (null))
+        (array
+          (new_expression
+            (identifier)
+            (arguments))
+          (null)
+          (object
+            (pair
+              (property_identifier)
+              (new_expression
+                (identifier)
+                (arguments))))))))
+  (lexical_declaration
+    (variable_declarator
+      (identifier)
+      (nominal_type_annotation
+        (function_nominal_type
+          (nominal_formal_parameters
+            (nominal_type_identifier)
+            (optional_nominal_type
+              (nominal_type_identifier)))
+          (nominal_type_identifier)))
+      (arrow_function
+        (formal_parameters
+          (required_parameter
+            (identifier))
+          (required_parameter
+            (identifier)))
+        (call_expression
+          (nominal_wrap_expression
+            (nominal_type_identifier)
+            (identifier))
+          (arguments
+            (number))))))
+  (lexical_declaration
+    (variable_declarator
+      (identifier)
+      (nominal_type_annotation
+        (function_nominal_type
+          (nominal_formal_parameters
+            (nominal_type_identifier)
+            (optional_nominal_type
+              (nominal_type_identifier))
+            (tuple_nominal_type
+              (optional_nominal_type
+                (nominal_type_identifier))
+              (optional_nominal_type
+                (function_nominal_type
+                  (nominal_formal_parameters
+                    (nominal_type_identifier))
+                  (nullable_nominal_type
+                    (nominal_type_identifier))))
+              (optional_nominal_type
+                (nominal_type_identifier))))
+          (nominal_type_identifier)))
+      (arrow_function
+        (formal_parameters
+          (required_parameter
+            (identifier))
+          (required_parameter
+            (identifier))
+          (required_parameter
+            (identifier))
+          (required_parameter
+            (identifier)))
+        (call_expression
+          (nominal_wrap_expression
+            (nominal_type_identifier)
+            (identifier))
+          (arguments
+            (number)
+            (number)
+            (number))))))
+  (nominal_type_declaration
+    (nominal_type_identifier)
+    (nominal_supertypes
+      (object_nominal_type
+        (nominal_property_signature
+          (property_identifier)
+          (nominal_type_annotation
+            (nominal_type_identifier)))
+        (nominal_method_signature
+          (property_identifier)
+          (nominal_formal_parameters)
+          (nominal_type_annotation
+            (nominal_type_identifier))))))
+  (lexical_declaration
+    (variable_declarator
+      (identifier)
+      (nominal_type_annotation
+        (nominal_type_identifier))
+      (object
+        (pair
+          (property_identifier)
+          (object
+            (pair
+              (property_identifier)
+              (object
+                (pair
+                  (property_identifier)
+                  (object))))))))))
