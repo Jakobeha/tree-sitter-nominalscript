@@ -3,34 +3,34 @@ Various nominalscript (hard) | Ambient declarations
 ==================================
 
 declare class Error {
-  constructor: Function; () => Void
+  constructor: Function:: () => Void
 }
 
-declare var foo; Integer;
+declare var foo :: Integer;
 
 declare const bar = "baz";
 
-declare function greet(greeting; String); Void;
+declare function greet(greeting :: String) :: Void;
 
 declare namespace myLib {
-    function makeGreeting(s; String); Greeting;
-    let greetings; String[];
+    function makeGreeting(s :: String) :: Greeting;
+    let greetings :: String[];
 
     interface LogOptions {
-      verbose?; Boolean;
+      verbose? :: Boolean;
     }
     interface AlertOptions {
-      modal; Boolean;
-      title?; String;
-      color?: string; Color;
+      modal :: Boolean;
+      title? :: String;
+      color?: string :: Color;
     }
 }
 
 declare class Greeter {
-  constructor(greeting; String);
+  constructor(greeting :: String);
 
-  greeting; String;
-  showGreeting(); Void;
+  greeting :: String;
+  showGreeting() :: Void;
 }
 
 declare module Foo.Bar { export var foo; };
@@ -91,7 +91,7 @@ declare module Foo {
         (required_parameter
           (identifier)
           (nominal_type_annotation
-            (nominal_type_identifier))))
+            (predefined_nominal_type_identifier))))
       (nominal_type_annotation
         (nominal_type_identifier))))
   (ambient_declaration
@@ -104,7 +104,7 @@ declare module Foo {
             (required_parameter
               (identifier)
               (nominal_type_annotation
-                (nominal_type_identifier))))
+                (predefined_nominal_type_identifier))))
           (nominal_type_annotation
             (nominal_type_identifier)))
         (lexical_declaration
@@ -112,17 +112,17 @@ declare module Foo {
             (identifier)
             (nominal_type_annotation
               (array_nominal_type
-                (nominal_type_identifier)))))
+                (predefined_nominal_type_identifier)))))
         (interface_declaration
           (type_identifier)
-          (object_type
+          (interface_body
             (property_signature
               (property_identifier)
               (nominal_type_annotation
                 (nominal_type_identifier)))))
         (interface_declaration
           (type_identifier)
-          (object_type
+          (interface_body
             (property_signature
               (property_identifier)
               (nominal_type_annotation
@@ -130,7 +130,7 @@ declare module Foo {
             (property_signature
               (property_identifier)
               (nominal_type_annotation
-                (nominal_type_identifier)))
+                (predefined_nominal_type_identifier)))
             (property_signature
               (property_identifier)
               (type_annotation
@@ -147,11 +147,11 @@ declare module Foo {
             (required_parameter
               (identifier)
               (nominal_type_annotation
-                (nominal_type_identifier)))))
+                (predefined_nominal_type_identifier)))))
         (public_field_definition
           (property_identifier)
           (nominal_type_annotation
-            (nominal_type_identifier)))
+            (predefined_nominal_type_identifier)))
         (method_signature
           (property_identifier)
           (formal_parameters)
@@ -161,7 +161,7 @@ declare module Foo {
     (module
       (nested_identifier
         (identifier)
-        (identifier))
+        (property_identifier))
       (statement_block
         (export_statement
           (variable_declaration
@@ -179,6 +179,7 @@ declare module Foo {
           (statement_block)
           (parenthesized_expression
             (true)))
+        (empty_statement)
         (for_in_statement
           (identifier)
           (null)
@@ -222,11 +223,11 @@ Nominalscript in catch clauses
 ==================================================
 
 try {}
-catch (e; Any) {}
+catch (e :: Any) {}
 finally {}
 
 try {}
-catch (e: any; Error) {}
+catch (e: any :: Error) {}
 finally {}
 
 ---
@@ -237,7 +238,7 @@ finally {}
     (catch_clause
       (identifier)
       (nominal_type_annotation
-        (nominal_type_identifier))
+        (predefined_nominal_type_identifier))
       (statement_block))
     (finally_clause
       (statement_block)))
@@ -258,13 +259,13 @@ NominalScript method return values | Flow-style ambient class declarations with 
 ==================================================
 
 declare interface IFoo {
-  bar(); Integer,
-  baz(); IBaz,
+  bar():: Integer,
+  baz():: IBaz,
 }
 
 declare class Foo {
-  bar(): number; Integer,
-  baz(); Baz,
+  bar(): number:: Integer,
+  baz():: Baz,
 }
 
 ---
@@ -273,7 +274,7 @@ declare class Foo {
   (ambient_declaration
     (interface_declaration
       (type_identifier)
-      (object_type
+      (interface_body
         (method_signature
           (property_identifier)
           (formal_parameters)
@@ -306,7 +307,7 @@ A nominalscript annotation in a module.exports | Flow module.exports declaration
 ==================================
 
 declare module.exports: {
-  foo; String;
+  foo :: String;
 }
 
 ---
@@ -318,13 +319,13 @@ declare module.exports: {
       (property_signature
         (property_identifier)
         (nominal_type_annotation
-          (nominal_type_identifier))))))
+          (predefined_nominal_type_identifier))))))
 
 ==================================
 Simple nominalscript with a generic | Ambient exports
 ==================================
 
-export default function point(x; Integer, y: number; Integer) {
+export default function point(x :: Integer, y: number :: Integer) {
     return { x, y };
 }
 
@@ -332,7 +333,7 @@ export default function point(x; Integer, y: number; Integer) {
 
 export default class A {}
 
-export async function readFile(filename: string): Promise<Buffer>; Promise<Buffer>
+export async function readFile(filename: string): Promise<Buffer> :: Promise<Buffer>
 
 ---
 
@@ -385,7 +386,7 @@ Nominalscript after typeof (this is a case where you may actually want both a Ty
 ==================================
 
 declare class Linter {
-    static findConfiguration: typeof findConfiguration; Configuration;
+    static findConfiguration: typeof findConfiguration :: Configuration;
 }
 
 ---
@@ -407,8 +408,8 @@ declare class Linter {
 Export nominal types
 ==================================
 
-export { Foo, ;Bar, type Baz };
-export { ;Qux as Abc };
+export { Foo, :Bar, type Baz };
+export { :Qux as Abc };
 
 ---
 
@@ -431,8 +432,8 @@ export { ;Qux as Abc };
 Import nominal types
 ==================================
 
-import { Foo, ;Bar, type Baz } from 'qux';
-import { ;Abc as Def, Ghi as Jkl, typeof Mno as Pqr } from 'stu'
+import { Foo, :Bar, type Baz } from 'qux';
+import { :Abc as Def, Ghi as Jkl, typeof Mno as Pqr } from 'stu'
 
 ---
 
@@ -468,8 +469,8 @@ Import nominal types in modules
 ==================================
 
 module C {
-  import { Foo, ;Bar, type Baz } from 'qux';
-  import { ;Abc as Def, Ghi as Jkl, typeof Mno as Pqr } from 'stu'
+  import { Foo, :Bar, type Baz } from 'qux';
+  import { :Abc as Def, Ghi as Jkl, typeof Mno as Pqr } from 'stu'
 }
 
 ---
@@ -509,12 +510,12 @@ More nominalscript annotations | Property signatures with accessibility modifier
 ==================================
 
 export interface IAppState {
-  public readonly users: ReadonlyArray<User>; User
-  public saveUser(user; User); Void
+  public readonly users: ReadonlyArray<User> :: User
+  public saveUser(user :: User) :: Void
 }
 
 export class CloningRepository {
-  public readonly id; Integer = CloningRepositoryID++
+  public readonly id :: Integer = CloningRepositoryID++
 }
 
 
@@ -524,7 +525,7 @@ export class CloningRepository {
   (export_statement
     (interface_declaration
       (type_identifier)
-      (object_type
+      (interface_body
         (property_signature
           (accessibility_modifier)
           (property_identifier)
@@ -561,22 +562,22 @@ export class CloningRepository {
 Nominal type declarations
 ==================================
 
-type; Foo
-type; Bar <: number
-type; Baz <; String
-type; Qux guard(a) {
+type: Foo
+type: Bar <: number
+type: Baz <:: String
+type: Qux guard(a) {
   return a instanceof number
 }
-type; Abc <: number guard(a) {
+type: Abc <: number guard(a) {
   return a % 2 === 0
 }
-type; Def <; String guard(a) {
+type: Def <:: String guard(a) {
   return a.length > 0
 }
-type; Ghi <: number <; Integer & Float guard(a) {
+type: Ghi <:: Integer & Float <: number guard(a) {
   return a % 1 === 0
 }
-type; Jkl<T <; U[], U> <; Mno<T>[] & Pqr<T, Integer, Stu[]> & T guard(a) {
+type: Jkl<T <:: U[], U> <:: Mno<T>[] & Pqr<T, Integer, Stu[]> & T guard(a) {
   if (a === 5) {
     return true
   } else {
@@ -596,7 +597,7 @@ type; Jkl<T <; U[], U> <; Mno<T>[] & Pqr<T, Integer, Stu[]> & T guard(a) {
   (nominal_type_declaration
     (nominal_type_identifier)
     (nominal_supertypes
-      (nominal_type_identifier)))
+      (predefined_nominal_type_identifier)))
   (nominal_type_declaration
     (nominal_type_identifier)
     (nominal_type_guard
@@ -622,7 +623,7 @@ type; Jkl<T <; U[], U> <; Mno<T>[] & Pqr<T, Integer, Stu[]> & T guard(a) {
   (nominal_type_declaration
     (nominal_type_identifier)
     (nominal_supertypes
-      (nominal_type_identifier))
+      (predefined_nominal_type_identifier))
     (nominal_type_guard
       (identifier)
       (statement_block
@@ -634,11 +635,11 @@ type; Jkl<T <; U[], U> <; Mno<T>[] & Pqr<T, Integer, Stu[]> & T guard(a) {
             (number))))))
   (nominal_type_declaration
     (nominal_type_identifier)
-    (typescript_supertype
-      (predefined_type))
     (nominal_supertypes
       (nominal_type_identifier)
-      (nominal_type_identifier))
+      (predefined_nominal_type_identifier))
+    (typescript_supertype
+      (predefined_type))
     (nominal_type_guard
       (identifier)
       (statement_block
@@ -695,8 +696,8 @@ More nominalscript | Ambient module declarations
 ==================================
 
 module Promise {
-    var on; {}
-    export function resolve<;R>(value?; Thenable<R>); Promise<R>;
+    var on :: {}
+    export function resolve<:R>(value? :: Thenable<R>) :: Promise<R>;
 }
 
 declare module "example"
@@ -747,7 +748,7 @@ declare module "example" { }
 Weird but valid place for a nominalscript annotation
 =================================
 
-x = { name, description, private: (private; Private), public: (public: Public; Public) }
+x = { name, description, private: (private :: Private), public: (public: Public :: Public) }
 
 ---
 
@@ -777,53 +778,64 @@ x = { name, description, private: (private; Private), public: (public: Public; P
 Nominal wrapper expressions
 =================================
 
-Array<Integer>;foo()
-Array<Integer>;foo(1, 2, 3)
-Array<Float>!;(5 + bar)
-Array<Float>!;5 + bar
+foo() as: Integer;
+foo(1, 2, 3) as: Array<Integer>;
+(5 + bar) as: Float;
+5 + bar as: Float;
+5 as: { foo :: Float, bar :: Integer, baz() :: void } + bar;
 
 ---
 
 (program
   (expression_statement
-    (call_expression
-      (nominal_wrap_expression
-        (generic_nominal_type
-          (nominal_type_identifier)
-          (nominal_type_arguments
-            (nominal_type_identifier)))
-        (identifier))
-      (arguments)))
+    (nominal_wrap_expression
+      (call_expression
+        (identifier)
+        (arguments))
+      (nominal_type_identifier)))
   (expression_statement
-    (call_expression
-      (nominal_wrap_expression
-        (generic_nominal_type
-          (nominal_type_identifier)
-          (nominal_type_arguments
-            (nominal_type_identifier)))
-        (identifier))
-      (arguments
-        (number)
-        (number)
-        (number))))
-  (expression_statement
-    (nominal_wrap_unchecked_expression
+    (nominal_wrap_expression
+      (call_expression
+        (identifier)
+        (arguments
+          (number)
+          (number)
+          (number)))
       (generic_nominal_type
-        (nominal_type_identifier)
+        (predefined_nominal_type_identifier)
         (nominal_type_arguments
-          (nominal_type_identifier)))
+          (nominal_type_identifier)))))
+  (expression_statement
+    (nominal_wrap_expression
       (parenthesized_expression
         (binary_expression
           (number)
-          (identifier)))))
+          (identifier)))
+      (predefined_nominal_type_identifier)))
+  (expression_statement
+    (nominal_wrap_expression
+      (binary_expression
+        (number)
+        (identifier))
+      (predefined_nominal_type_identifier)))
   (expression_statement
     (binary_expression
-      (nominal_wrap_unchecked_expression
-        (generic_nominal_type
-          (nominal_type_identifier)
-          (nominal_type_arguments
-            (nominal_type_identifier)))
-        (number))
+      (nominal_wrap_expression
+        (number)
+        (object_nominal_type
+          (nominal_property_signature
+            (property_identifier)
+            (nominal_type_annotation
+              (predefined_nominal_type_identifier)))
+          (nominal_property_signature
+            (property_identifier)
+            (nominal_type_annotation
+              (nominal_type_identifier)))
+          (nominal_method_signature
+            (property_identifier)
+            (nominal_formal_parameters)
+            (nominal_type_annotation
+              (nominal_type_identifier)))))
       (identifier))))
 
 =================================
@@ -831,7 +843,7 @@ Nominal generics
 =================================
 
 export interface Foo {
-  export function OrderedMap<;K <; Hashable, ;V>(iter; IterableKeyed<K, V>); OrderedMap<K, V>;
+  export function OrderedMap<:K <:: Hashable, :V>(iter :: IterableKeyed<K, V>) :: OrderedMap<K, V>;
 }
 
 ---
@@ -840,7 +852,7 @@ export interface Foo {
   (export_statement
     (interface_declaration
       (type_identifier)
-      (object_type
+      (interface_body
         (export_statement
           (function_signature
             (identifier)
@@ -872,16 +884,16 @@ Complex nominal types
 =================================
 
 declare namespace moment {
-  export var formatFunction: () => string; () => FormattedString;
+  export var formatFunction: () => string :: () => FormattedString;
 
-  export var x; String;
-  export var foo; {
-    bar; Bar,
-    baz<Qux>(Def<Qux>); Void,
-    ghi; (Jkl) => {
-      nmo; Pqr
+  export var x :: String;
+  export var foo :: {
+    bar :: Bar,
+    baz<Qux>(Def<Qux>) :: Void,
+    ghi :: (Jkl) => {
+      nmo :: Pqr
     },
-    stu; [Integer, String]
+    stu :: [Integer, String]
   }
 }
 
@@ -889,17 +901,17 @@ var a: {
   b: number,
   c: string,
   d: boolean
-}; {
-  b; B,
-  c; C,
-  d; D
+} :: {
+  b :: B,
+  c :: C,
+  d :: D
 } = {
   b,
   c,
   d
 }
 
-var fooBar = [Foo, Bar];[foo, bar]
+var fooBar = [foo, bar] as: [Foo, Bar]
 
 ---
 
@@ -925,7 +937,7 @@ var fooBar = [Foo, Bar];[foo, bar]
             (variable_declarator
               (identifier)
               (nominal_type_annotation
-                (nominal_type_identifier)))))
+                (predefined_nominal_type_identifier)))))
         (export_statement
           (variable_declaration
             (variable_declarator
@@ -964,7 +976,7 @@ var fooBar = [Foo, Bar];[foo, bar]
                     (nominal_type_annotation
                       (tuple_nominal_type
                         (nominal_type_identifier)
-                        (nominal_type_identifier))))))))))))
+                        (predefined_nominal_type_identifier))))))))))))
   (variable_declaration
     (variable_declarator
       (identifier)
@@ -1003,21 +1015,21 @@ var fooBar = [Foo, Bar];[foo, bar]
   (variable_declaration
     (variable_declarator
       (identifier)
-      (array
-        (identifier)
-        (identifier))))
-  (expression_statement
-    (array
-      (identifier)
-      (identifier))))
+      (nominal_wrap_expression
+        (array
+          (identifier)
+          (identifier))
+        (tuple_nominal_type
+          (nominal_type_identifier)
+          (nominal_type_identifier))))))
 
 ===========================================
 More nominalscript annotations | Method declarations with keywords as names
 ===========================================
 
 class Foo {
-  private async(); {}
-  get(); Result {};
+  private async() :: {}
+  get() :: Result {};
   private set(plugin) {};
 }
 
@@ -1051,9 +1063,9 @@ class Foo {
 NominalScript method with optional param
 =======================================
 
-function foo(xyz?: number; Integer) {}
-function bar(xyz? ; Number) {}
-function baz(xyz?; Number) {}
+function foo(xyz?: number :: Integer) {}
+function bar(xyz? :: Number) {}
+function baz(xyz? :: Number) {}
 
 ---
 
@@ -1074,7 +1086,7 @@ function baz(xyz?; Number) {}
       (optional_parameter
         (identifier)
         (nominal_type_annotation
-          (nominal_type_identifier))))
+          (predefined_nominal_type_identifier))))
     (statement_block))
   (function_declaration
     (identifier)
@@ -1082,7 +1094,7 @@ function baz(xyz?; Number) {}
       (optional_parameter
         (identifier)
         (nominal_type_annotation
-          (nominal_type_identifier))))
+          (predefined_nominal_type_identifier))))
     (statement_block)))
 
 =======================================
@@ -1090,11 +1102,11 @@ More nominalscript annotations | Classes with method signatures
 =======================================
 
 class Foo {
-  public async waitFor<T, ;T>(func: () => T | Promise<T | undefined>; () => T, accept?: (result: T) => boolean | Promise<boolean>; (T) => Boolean, timeoutMessage?: String, retryCount?; Number); Promise<T>;
+  public async waitFor<T, :T>(func: () => T | Promise<T | undefined> :: () => T, accept?: (result: T) => boolean | Promise<boolean> :: (T) => Boolean, timeoutMessage?: String, retryCount? :: Number) :: Promise<T>;
 
-  public readonly async bar?<;T>();
+  public readonly async bar?<:T>();
   private static bar();
-  private static async bar(); T;
+  private static async bar() :: T;
 }
 
 ---
@@ -1157,7 +1169,7 @@ class Foo {
           (optional_parameter
             (identifier)
             (nominal_type_annotation
-              (nominal_type_identifier))))
+              (predefined_nominal_type_identifier))))
         (nominal_type_annotation
           (generic_nominal_type
             (nominal_type_identifier)
@@ -1186,11 +1198,11 @@ Classes with property names as strings or numbers
 =======================================
 
 class Foo {
-  static 2; String;
-  public static 2; String = 'string';
-  public static readonly 'hello'?; Integer = 'string';
-  static readonly 'hello'?; Integer = 'string';
-  readonly 'hello'?; Integer = 'string';
+  static 2 :: String;
+  public static 2 :: String = 'string';
+  public static readonly 'hello'? :: Integer = 'string';
+  static readonly 'hello'? :: Integer = 'string';
+  readonly 'hello'? :: Integer = 'string';
 }
 
 ---
@@ -1202,12 +1214,12 @@ class Foo {
       (public_field_definition
         (number)
         (nominal_type_annotation
-          (nominal_type_identifier)))
+          (predefined_nominal_type_identifier)))
       (public_field_definition
         (accessibility_modifier)
         (number)
         (nominal_type_annotation
-          (nominal_type_identifier))
+          (predefined_nominal_type_identifier))
         (string
           (string_fragment)))
       (public_field_definition
@@ -1238,10 +1250,10 @@ Classes with decorators
 =======================================
 
 @baz @bam class Foo {
-  @foo static 2; String;
-  @bar.buzz(grue) public static 2; String = 'string';
-  @readonly readonly 'hello'?; Integer = 'string';
-  @readonly fooBar(@required param; Any, @optional param2?; Any) {
+  @foo static 2 :: String;
+  @bar.buzz(grue) public static 2 :: String = 'string';
+  @readonly readonly 'hello'? :: Integer = 'string';
+  @readonly fooBar(@required param :: Any, @optional param2? :: Any) {
   }
 }
 
@@ -1255,29 +1267,29 @@ Classes with decorators
       (identifier))
     (type_identifier)
     (class_body
-      (decorator
-        (identifier))
       (public_field_definition
+        (decorator
+          (identifier))
         (number)
         (nominal_type_annotation
-          (nominal_type_identifier)))
-      (decorator
-        (call_expression
-          (member_expression
-            (identifier)
-            (property_identifier))
-          (arguments
-            (identifier))))
+          (predefined_nominal_type_identifier)))
       (public_field_definition
+        (decorator
+          (call_expression
+            (member_expression
+              (identifier)
+              (property_identifier))
+            (arguments
+              (identifier))))
         (accessibility_modifier)
         (number)
         (nominal_type_annotation
-          (nominal_type_identifier))
+          (predefined_nominal_type_identifier))
         (string
           (string_fragment)))
-      (decorator
-        (identifier))
       (public_field_definition
+        (decorator
+          (identifier))
         (string
           (string_fragment))
         (nominal_type_annotation
@@ -1294,20 +1306,20 @@ Classes with decorators
               (identifier))
             (identifier)
             (nominal_type_annotation
-              (nominal_type_identifier)))
+              (predefined_nominal_type_identifier)))
           (optional_parameter
             (decorator
               (identifier))
             (identifier)
             (nominal_type_annotation
-              (nominal_type_identifier))))
+              (predefined_nominal_type_identifier))))
         (statement_block)))))
 
 =======================================
 Classes with methods with and without trailing semicolons on one line
 =======================================
 
-class Foo<Bar> extends Baz { bar; Integer = 5; static one(a; String) { return a; }; two(b; String); String { return b; } three; Integer; four: 4; Integer }
+class Foo<Bar> extends Baz { bar :: Integer = 5; static one(a :: String) { return a; }; two(b :: String) :: String { return b; } three :: Integer; four: 4 :: Integer }
 
 ---
 
@@ -1332,7 +1344,7 @@ class Foo<Bar> extends Baz { bar; Integer = 5; static one(a; String) { return a;
           (required_parameter
             (identifier)
             (nominal_type_annotation
-              (nominal_type_identifier))))
+              (predefined_nominal_type_identifier))))
         (statement_block
           (return_statement
             (identifier))))
@@ -1342,9 +1354,9 @@ class Foo<Bar> extends Baz { bar; Integer = 5; static one(a; String) { return a;
           (required_parameter
             (identifier)
             (nominal_type_annotation
-              (nominal_type_identifier))))
+              (predefined_nominal_type_identifier))))
         (nominal_type_annotation
-          (nominal_type_identifier))
+          (predefined_nominal_type_identifier))
         (statement_block
           (return_statement
             (identifier))))
@@ -1369,10 +1381,10 @@ abstract class Foo {
 
 abstract class Animal {
     readonly abstract prop: string;
-    requiredProp!; String;
+    requiredProp! :: String;
     abstract makeSound(): void;
-    abstract get readonlyProp(); String;
-    protected abstract readonlyProp?(); String;
+    abstract get readonlyProp() :: String;
+    protected abstract readonlyProp?() :: String;
     move(): void {
         console.log("roaming the earth...");
     }
@@ -1398,7 +1410,7 @@ abstract class Foo {
       (public_field_definition
         (property_identifier)
         (nominal_type_annotation
-          (nominal_type_identifier)))
+          (predefined_nominal_type_identifier)))
       (abstract_method_signature
         (property_identifier)
         (formal_parameters)
@@ -1408,13 +1420,13 @@ abstract class Foo {
         (property_identifier)
         (formal_parameters)
         (nominal_type_annotation
-          (nominal_type_identifier)))
+          (predefined_nominal_type_identifier)))
       (abstract_method_signature
         (accessibility_modifier)
         (property_identifier)
         (formal_parameters)
         (nominal_type_annotation
-          (nominal_type_identifier)))
+          (predefined_nominal_type_identifier)))
       (method_definition
         (property_identifier)
         (formal_parameters)
@@ -1439,8 +1451,8 @@ abstract class Foo {
 Definite assignment assertions
 ==================================
 
-var a!; B;
-let a!; B;
+var a! :: B;
+let a! :: B;
 
 ---
 
@@ -1460,8 +1472,9 @@ let a!; B;
 Nullable nominal types
 ==================================
 
-var a; B?;
-let a; () => [String, B][]?;
+var a :: B?;
+let a :: () => [String, B]?[];
+let a :: () => [String, B][]?;
 
 ---
 
@@ -1478,19 +1491,30 @@ let a; () => [String, B][]?;
       (nominal_type_annotation
         (function_nominal_type
           (nominal_formal_parameters)
+          (array_nominal_type
+            (nullable_nominal_type
+              (tuple_nominal_type
+                (predefined_nominal_type_identifier)
+                (nominal_type_identifier))))))))
+  (lexical_declaration
+    (variable_declarator
+      (identifier)
+      (nominal_type_annotation
+        (function_nominal_type
+          (nominal_formal_parameters)
           (nullable_nominal_type
             (array_nominal_type
               (tuple_nominal_type
-                (nominal_type_identifier)
+                (predefined_nominal_type_identifier)
                 (nominal_type_identifier)))))))))
 
 ====================================
 Top-level export
 ====================================
 
-export type; Not<T <; Boolean> guard(x) { return !guard(x) }
-export type; True <; Boolean & Not<False> guard(x) { return x }
-export type; False <; Boolean & Not<True>
+export type: Not<T <:: Boolean> guard(x) { return !guard(x) }
+export type: True <:: Boolean & Not<False> guard(x) { return x }
+export type: False <:: Boolean & Not<True>
 
 ---
 
@@ -1540,9 +1564,9 @@ export type; False <; Boolean & Not<True>
 Functions types with rest parameter
 ====================================
 
-export type; Foo <; (String, ...Number[]) => Boolean guard(x) { return x }
-export type; Bar <; (String?, ...[Number, String],) => Boolean guard(x) { return x }
-export type; Baz <; <T>(...T[]) => Void
+export type: Foo <:: (String, ...Number[]) => Boolean guard(x) { return x }
+export type: Bar <:: (String?, ...[Number, String],) => Boolean guard(x) { return x }
+export type: Baz <:: <T>(...T[]) => Void
 
 ---
 
@@ -1553,9 +1577,9 @@ export type; Baz <; <T>(...T[]) => Void
       (nominal_supertypes
         (function_nominal_type
           (nominal_formal_parameters
-            (nominal_type_identifier)
+            (predefined_nominal_type_identifier)
             (array_nominal_type
-              (nominal_type_identifier)))
+              (predefined_nominal_type_identifier)))
           (nominal_type_identifier)))
       (nominal_type_guard
         (identifier)
@@ -1569,10 +1593,10 @@ export type; Baz <; <T>(...T[]) => Void
         (function_nominal_type
           (nominal_formal_parameters
             (nullable_nominal_type
-              (nominal_type_identifier))
+              (predefined_nominal_type_identifier))
             (tuple_nominal_type
-              (nominal_type_identifier)
-              (nominal_type_identifier)))
+              (predefined_nominal_type_identifier)
+              (predefined_nominal_type_identifier)))
           (nominal_type_identifier)))
       (nominal_type_guard
         (identifier)
@@ -1596,11 +1620,11 @@ export type; Baz <; <T>(...T[]) => Void
 Variance bounds, this parameters, trailing guards
 ====================================
 
-export type; Not<cov T <; Boolean> guard(cov) { return !guard(cov); }
+export type: Not<cov T <:: Boolean> guard(cov) { return !guard(cov); }
 module Fobar {
-    type; Foo<cov A, con B, inv C, biv B <; C>
+    type: Foo<cov A, con B, inv C, biv B <:: C>
+        <:: (this :: A) => Void & (this :: B, Bar) => Void & (this :: C, ...Baz) => <cov D>(this :: D ,) => Void
         <: number
-        <; (this; A) => Void & (this; B, Bar) => Void & (this; C, ...Baz) => <cov D>(this; D ,) => Void
         guard(this) { return !guard(this, cov, con, inv, biv); }
     guard(this_is_not_a_guard_but_an_expression)
 }
@@ -1641,8 +1665,6 @@ module Fobar {
             (nominal_type_identifier)
             (nominal_supertypes
               (nominal_type_identifier))))
-        (typescript_supertype
-          (predefined_type))
         (nominal_supertypes
           (function_nominal_type
             (nominal_formal_parameters
@@ -1664,6 +1686,8 @@ module Fobar {
               (nominal_formal_parameters
                 (nominal_type_identifier))
               (nominal_type_identifier))))
+        (typescript_supertype
+          (predefined_type))
         (nominal_type_guard
             (identifier)
             (statement_block
@@ -1687,12 +1711,12 @@ module Fobar {
 Optional nominal types
 ====================================
 
-let a; [Foo, ?Bar] = [new Foo(), new Bar()];
-let b; [Foo, ?Bar, ?{ field; Baz }][] = [[new Foo()], [new Foo(), null], [new Foo(), null, { field: new Baz() }]];
-let c; (Foo, ?Bar) => Void = (x, y) => x; c(12);
-let d; (Foo, ?Bar, ...[?Baz, ?(Qux) => Int?, ?Abc]) => Void = (x, y, z, w) => x; d(12, 14, 16);
-type; E <; { field?; E, ignore?(); Void }
-let e; E = { field: { field: { field: {} } } };
+let a :: [Foo, ?Bar] = [new Foo(), new Bar()];
+let b :: [Foo, ?Bar, ?{ field :: Baz }][] = [[new Foo()], [new Foo(), null], [new Foo(), null, { field: new Baz() }]];
+let c :: (Foo, ?Bar) => Void = (x, y) => x; c(12);
+let d :: (Foo, ?Bar, ...[?Baz, ?(Qux) => Int?, ?Abc]) => Void = (x, y, z, w) => x; d(12, 14, 16);
+type: E <:: { field? :: E, ignore?() :: Void }
+let e :: E = { field: { field: { field: {} } } };
 
 ---
 
@@ -1764,12 +1788,12 @@ let e; E = { field: { field: { field: {} } } };
             (identifier))
           (required_parameter
             (identifier)))
+            (identifier))))
+      (expression_statement
         (call_expression
-          (nominal_wrap_expression
-            (nominal_type_identifier)
-            (identifier))
+          (identifier)
           (arguments
-            (number))))))
+            (number))))
   (lexical_declaration
     (variable_declarator
       (identifier)
@@ -1787,7 +1811,7 @@ let e; E = { field: { field: { field: {} } } };
                   (nominal_formal_parameters
                     (nominal_type_identifier))
                   (nullable_nominal_type
-                    (nominal_type_identifier))))
+                    (predefined_nominal_type_identifier))))
               (optional_nominal_type
                 (nominal_type_identifier))))
           (nominal_type_identifier)))
@@ -1801,14 +1825,14 @@ let e; E = { field: { field: { field: {} } } };
             (identifier))
           (required_parameter
             (identifier)))
+            (identifier))))
+      (expression_statement
         (call_expression
-          (nominal_wrap_expression
-            (nominal_type_identifier)
-            (identifier))
+          (identifier)
           (arguments
             (number)
             (number)
-            (number))))))
+            (number))))
   (nominal_type_declaration
     (nominal_type_identifier)
     (nominal_supertypes

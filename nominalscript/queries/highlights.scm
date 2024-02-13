@@ -21,6 +21,7 @@
 ; Types
 
 (nominal_type_identifier) @type
+(predefined_nominal_type_identifier) @type.builtin
 
 (nominal_type_arguments
   "<" @punctuation.bracket
@@ -46,6 +47,6 @@
 
 (nominal_property_signature
   name: (property_identifier) @method
-  type: (nominal_type_annotation 
+  type: (nominal_type_annotation
           [(function_nominal_type)
            (nullable_nominal_type (parenthesized_nominal_type (function_nominal_type)))]))
